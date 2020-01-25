@@ -41,7 +41,7 @@
 				<div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="blog-single.html" class="block-20"
-							style="background-image: url('/resoures/images/image_1.jpg');"> </a>
+							style="background-image: url('/resources/images/image_1.jpg');"> </a>
 						<div class="text">
 							<span class="tag">Tips, Travel</span>
 							<h3 class="heading mt-3">
@@ -91,7 +91,7 @@
 				<div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="blog-single.html" class="block-20"
-							style="background-image: url('/resoures/images/image_3.jpg');"> </a>
+							style="background-image: url('/resources/images/image_3.jpg');"> </a>
 						<div class="text">
 							<span class="tag">Tips, Travel</span>
 							<h3 class="heading mt-3">

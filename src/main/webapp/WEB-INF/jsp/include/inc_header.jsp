@@ -24,6 +24,10 @@ function goBlog(){
 function goContact(){
 	location.href = '/main/contact.do';
 }
+
+function goLogin(){
+	location.href = '/login/loginView.do';
+}
 </script>
     <nav
 		class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
@@ -44,6 +48,7 @@ function goContact(){
 					<li class="nav-item"><a href="javascript:goHotels();" class="nav-link">Hotels</a></li>
 					<li class="nav-item"><a href="javascript:goBlog();" class="nav-link">Blog</a></li>
 					<li class="nav-item"><a href="javascript:goContact();" class="nav-link">Contact</a></li>
+					<li class="nav-item"><a href="javascript:goLogin();" class="nav-link">Login</a></li>
 				</ul>
 			</div>
 		</div>
