@@ -21,7 +21,7 @@
 <script>
 $(document).ready(function () {
 	   $(function () {
-	            
+	            //휴대폰번호 입력시 자동 하이픈
 	            $('#userPhone').keydown(function (event) {
 	            	let lastNum;
 	            	var key = event.charCode || event.keyCode || 0;
@@ -55,6 +55,56 @@ $(document).ready(function () {
 	//취소버튼 클릭이벤트
 	function back() {
 		location.href = '/login/loginView.do';
+	}
+	
+	//아이디 중복 확인
+	function email_check(){
+		
+		var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		
+		if($("#userEmail").val() == '' || $("#userEmail").val() == null){
+			alert("이메일을 입력해주세요.");
+			return false;
+		}
+		
+		if(!regExp.test($("#userEmail").val())){//형식이 다른경우
+			alert("이메일 형식이 맞지않습니다.");
+			return false;
+		}
+		
+		$.ajax({
+			type : "POST",
+			url  : "/member/email_check.do",
+			data : {
+				userEmail : $("#userEmail").val()
+			}
+		
+		}).done(function(data){
+			
+			if(data.resultCode > 0){
+				$("#emailCheck_yn").val("N");
+				$("#userEmail").focus();
+				alert(data.Msg);//중복된아이디
+			}else{
+				alert(data.Msg);//사용가능
+				$("#emailCheck_yn").val("Y");
+				
+				//사용가능한 경우 수정못하게 버튼 상태변경
+				$("#email_chk").hide();
+				$("#userEmail").prop("readOnly","true");
+				$("#email_modify").show();
+			}
+		})
+		
+	}
+	//이메일 중복 버튼 이벤트
+	function email_modify(){
+		
+		$("#emailCheck_yn").val("N"); //다시 중복확인해야함
+		$("#userEmail").focus();
+		$("#userEmail").removeAttr("readOnly");
+		$("#email_modify").hide();
+		$("#email_chk").show();
 	}
 	
 	//특수문자체크 
@@ -103,10 +153,6 @@ $(document).ready(function () {
 			return false;
 		}
 	}
-	//전화번호 정규식
-	function autoHypenPhone(str){
-	
-	}
 	function signSub(){
 		//이름 공백체크
 		if($("#userNm").val() == '' || $("#userNm").val() == null){
@@ -134,6 +180,7 @@ $(document).ready(function () {
 			alert("휴대폰 번호에 공백을 입력할 수 없습니다.");
 			return false;
 		}
+		//주소체크
 		if($("#post_code").val() == '' || $("#post_code").val() == null){
 			alert("우편번호를 입력해주세요.");
 			return false;
@@ -146,10 +193,42 @@ $(document).ready(function () {
 			alert("상세주소를 입력해주세요.");
 			return false;
 		}
-		if(special_replace(("#detail_addr").val()) == false){
+		if(special_replace($("#detail_addr").val()) == false){
 			alert("상세주소에 특수문자를 입력할 수 없습니다.");
 			return false;
 		}
+		//약관 체크
+		if($("#agree").is(":checked") == false){
+			alert("약관동의를 체크해주세요.");
+			return false;
+		}
+		
+		if($("#emailCheck_yn").val() != "Y"){
+			alert("이메일 중복 체크를 확인해주세요.");
+			return false;
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url  : '/member/sign_upAct.do',
+			data : {
+				userNm		: $("#userNm").val(),
+				userEmail 	: $("#userEmail").val(),
+				userPass 	: $("#userPw").val(),
+				userPhone 	: $("#userPhone").val(),
+				post_code 	: $("#post_code").val(),
+				addr 		: $("#addr").val(),
+				detail_addr : $("#detail_addr").val()
+			},
+			
+		}).done(function(data){
+			if(data.resultCode > 0){//성공
+				alert(data.Msg);
+				location.href = "/login/loginView.do";
+			}else{					//실패
+				alert(data.Msg);
+			}
+		})
 	}
 </script>
 </head>
@@ -162,11 +241,14 @@ $(document).ready(function () {
 		</div>
 		<div class="col-sm-6 col-md-offset-3">
 			<form role="form">
+			<input type="hidden" id="emailCheck_yn" value="N">
 				<div class="form-group">
 					성명 <input type="text" class="form-control" id="userNm" placeholder="이름을 입력해 주세요." maxlength="6">
 				</div>
 				<div class="form-group">
 					이메일 주소 <input type="email" class="form-control" id="userEmail" placeholder="이메일 주소를 입력해주세요." maxlength="30">
+							<a href="javascript:email_check();" id="email_chk" class="btn btn-primary"> 중복확인 <i class="fa fa-check spaceLeft"></i></a>
+							<a href="javascript:email_modify();" id="email_modify" class="btn btn-primary" style="display:none;"> 수정 <i class="fa fa-check spaceLeft"></i></a>
 				</div>
 				<div class="form-group">
 					비밀번호 <input type="password" class="form-control" id="userPw" placeholder="비밀번호를 입력해주세요." maxlength="12">
@@ -189,7 +271,6 @@ $(document).ready(function () {
 				<div class="form-group">
 					<input type="text" class="form-control" id="detail_addr" placeholder="상세주소">
 				</div>
-
 
 				<div class="form-group">
 					<label>약관 동의</label>

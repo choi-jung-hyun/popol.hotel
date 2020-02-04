@@ -113,8 +113,8 @@ margin-left: 4px;
 	<script src="/resources/js/rsa/rsa.js"></script>
 	<!--RSA 끝  -->
 	<script>
-	function goSign_In(){
-		location.href = '/member/goSign_in.do';
+	function goSign_up(){
+		location.href = '/member/goSign_up.do';
 	}
 	</script>
 </head>
@@ -155,7 +155,7 @@ margin-left: 4px;
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					계정이 필요하신가요?<a href="javascript:goSign_In();">회원가입</a>
+					계정이 필요하신가요?<a href="javascript:goSign_up();">회원가입</a>
 				</div>
 				<div class="d-flex justify-content-center">
 					<a href="#">비밀번호를 찾으시나요?</a>

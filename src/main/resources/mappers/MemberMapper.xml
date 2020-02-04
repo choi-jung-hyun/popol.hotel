@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberDAO">
+
+<insert id="insertMember" parameterType="com.web.test.member.vo.MemberVO">
+	INSERT INTO TB_MEMBER(
+		USER_NM,
+		USER_ID,
+		USER_PW,
+		USER_PHONE,
+		POST_CODE,
+		ADDR,
+		DETAIL_ADDR,
+		REG_DT,
+		USE_YN
+	) VALUES(
+		#{userNm},
+		#{userEmail},
+		#{userPass},
+		#{userPhone},
+		#{post_code},
+		#{addr},
+		#{detail_addr},
+		SYSDATE,
+		'Y'
+	)
+</insert>
+
+<select id="email_check" resultType="Integer" parameterType="com.web.test.member.vo.MemberVO">
+	SELECT 
+		COUNT(*)
+	FROM 
+		TB_MEMBER
+	WHERE 
+		1=1
+		<if test="userEmail != null and userEmail != ''">
+			AND USER_ID = #{userEmail}
+		</if>
+		
+	
+
+</select>
+</mapper>
