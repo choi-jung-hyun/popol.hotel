@@ -6,6 +6,8 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 
@@ -13,16 +15,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import com.web.test.login.vo.RSA;
 
 @Controller
 public class RSAUtil {
 	private static final Logger logger = LoggerFactory.getLogger(RSAUtil.class);
 
-	private KeyPairGenerator generator;
-	private KeyFactory keyFactory;
-	private KeyPair keyPair;
-	private Cipher cipher;
+	private static KeyPairGenerator generator;
+	private static KeyFactory keyFactory;
+	private static KeyPair keyPair;
+	private static Cipher cipher;
 
 	public RSAUtil() {
         try {
@@ -31,17 +32,17 @@ public class RSAUtil {
             keyFactory = KeyFactory.getInstance("RSA");
             cipher = Cipher.getInstance("RSA");
         } catch (Exception e) {
-            logger.warn("RSAUtil ���� ����.", e);
+            logger.warn("RSAUtil 占쏙옙占쏙옙 占쏙옙占쏙옙.", e);
         }
     }
 
 	/**
-	 * ���ο� Ű���� ���� RSA ����
+	 * 占쏙옙占싸울옙 키占쏙옙占쏙옙 占쏙옙占쏙옙 RSA 占쏙옙占쏙옙
 	 * 
 	 * @return vo.other.RSA
 	 **/
-	public RSA createRSA() {
-		RSA rsa = null;
+	public static Map<String, Object>  createRSA() {
+		 Map<String, Object> map = null;
 		try {
 			keyPair = generator.generateKeyPair();
 
@@ -49,20 +50,23 @@ public class RSAUtil {
 			PrivateKey privateKey = keyPair.getPrivate();
 
 			RSAPublicKeySpec publicSpec = keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
-			String modulus = publicSpec.getModulus().toString(16);
-			String exponent = publicSpec.getPublicExponent().toString(16);
-			rsa = new RSA(privateKey, modulus, exponent);
+			String publicKeyModulus = publicSpec.getModulus().toString(16);
+			String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+			   map = new HashMap<String, Object>();
+		        map.put("pubKeyModule", publicKeyModulus);
+		        map.put("pubKeyExponent", publicKeyExponent);
+		        map.put("privateKey", privateKey);
 		} catch (Exception e) {
 			logger.warn("RSAUtil.createRSA()", e);
 		}
-		return rsa;
+		return map;
 	}
 
 	/**
-	 * ����Ű�� �̿��� RSA ��ȣȭ
+	 * 占쏙옙占쏙옙키占쏙옙 占싱울옙占쏙옙 RSA 占쏙옙호화
 	 * 
-	 * @param privateKey    session�� ����� PrivateKey
-	 * @param encryptedText ��ȣȭ�� ���ڿ�
+	 * @param privateKey    session占쏙옙 占쏙옙占쏙옙占� PrivateKey
+	 * @param encryptedText 占쏙옙호화占쏙옙 占쏙옙占쌘울옙
 	 **/
 	public String getDecryptText(PrivateKey privateKey, String encryptedText) throws Exception {
 		cipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -70,7 +74,7 @@ public class RSAUtil {
 		return new String(decryptedBytes, "UTF-8");
 	}
 
-	// 16���� ���ڿ��� byte �迭�� ��ȯ
+	// 16占쏙옙占쏙옙 占쏙옙占쌘울옙占쏙옙 byte 占썼열占쏙옙 占쏙옙환
 	private byte[] hexToByteArray(String hex) {
 		if (hex == null || hex.length() % 2 != 0) {
 			return new byte[] {};

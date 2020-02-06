@@ -2,6 +2,7 @@ package com.web.test.login.controller;
 
 
 import java.security.PrivateKey;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,15 +23,7 @@ public class LoginController {
 	@RequestMapping("/loginView.do")
 	public String login(HttpSession session, Model model) {
 		
-	       // RSA 키 생성
-        PrivateKey key = (PrivateKey) session.getAttribute("RSAprivateKey");
-        if (key != null) { // 기존 key 파기
-            session.removeAttribute("RSAprivateKey");
-        }
-        RSA rsa = rsaUtil.createRSA();
-        model.addAttribute("modulus", rsa.getModulus());
-        model.addAttribute("exponent", rsa.getExponent());
-        session.setAttribute("RSAprivateKey", rsa.getPrivateKey());
+
 		return "/login/login";
 	}
 	

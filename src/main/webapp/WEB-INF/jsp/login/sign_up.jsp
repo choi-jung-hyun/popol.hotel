@@ -153,79 +153,92 @@ $(document).ready(function () {
 			return false;
 		}
 	}
-	function signSub(){
+	
+	//회원가입전에 RSA 암호화키 가져옴.
+	function getKey() {
+		$.ajax({
+			type : 'POST',
+			url : '/include/getKey.do'
+
+		}).done(function(map) {
+			signSub(map);
+			console.log(map);
+		})
+	}
+
+	function signSub(map) {
 		//이름 공백체크
-		if($("#userNm").val() == '' || $("#userNm").val() == null){
+		if ($("#userNm").val() == '' || $("#userNm").val() == null) {
 			alert("이름에 공백을 입력할 수 없습니다.");
 			return false;
 		}
 		//이름에 특수문자 체크
-		if(special_replace($("#userNm").val()) == false){
+		if (special_replace($("#userNm").val()) == false) {
 			alert("이름에 특수문자를 사용할 수 없습니다.");
 			$("#userNm").val("");
 			return false;
 		}
 		//이메일 형식체크
-		if(emailChk($("#userEmail").val()) == false){
+		if (emailChk($("#userEmail").val()) == false) {
 			alert("이메일 형식이 적합하지 않습니다.");
 			$("#userEmail").val("");
 			return false;
 		}
 		//비밀번호 정규식 및 비밀번호 일치 체크
-		if(pwChk($("#userPw").val()) == false){
+		if (pwChk($("#userPw").val()) == false) {
 			return false;
 		}
 		//휴대폰번호 공백체크
-		if(userPhone == '' || userPhone == null){
+		if (userPhone == '' || userPhone == null) {
 			alert("휴대폰 번호에 공백을 입력할 수 없습니다.");
 			return false;
 		}
 		//주소체크
-		if($("#post_code").val() == '' || $("#post_code").val() == null){
+		if ($("#post_code").val() == '' || $("#post_code").val() == null) {
 			alert("우편번호를 입력해주세요.");
 			return false;
-		} 
-		if($("#addr").val() == '' || $("#addr").val() == null){
+		}
+		if ($("#addr").val() == '' || $("#addr").val() == null) {
 			alert("주소를 입력해주세요.");
 			return false;
 		}
-		if($("#detail_addr").val() == '' || $("#detail_addr").val() == null){
+		if ($("#detail_addr").val() == '' || $("#detail_addr").val() == null) {
 			alert("상세주소를 입력해주세요.");
 			return false;
 		}
-		if(special_replace($("#detail_addr").val()) == false){
+		if (special_replace($("#detail_addr").val()) == false) {
 			alert("상세주소에 특수문자를 입력할 수 없습니다.");
 			return false;
 		}
 		//약관 체크
-		if($("#agree").is(":checked") == false){
+		if ($("#agree").is(":checked") == false) {
 			alert("약관동의를 체크해주세요.");
 			return false;
 		}
-		
-		if($("#emailCheck_yn").val() != "Y"){
+
+		if ($("#emailCheck_yn").val() != "Y") {
 			alert("이메일 중복 체크를 확인해주세요.");
 			return false;
 		}
-		
+
 		$.ajax({
 			type : 'POST',
-			url  : '/member/sign_upAct.do',
+			url : '/member/sign_upAct.do',
 			data : {
-				userNm		: $("#userNm").val(),
-				userEmail 	: $("#userEmail").val(),
-				userPass 	: $("#userPw").val(),
-				userPhone 	: $("#userPhone").val(),
-				post_code 	: $("#post_code").val(),
-				addr 		: $("#addr").val(),
+				userNm : $("#userNm").val(),
+				userEmail : $("#userEmail").val(),
+				userPass : $("#userPw").val(),
+				userPhone : $("#userPhone").val(),
+				post_code : $("#post_code").val(),
+				addr : $("#addr").val(),
 				detail_addr : $("#detail_addr").val()
 			},
-			
-		}).done(function(data){
-			if(data.resultCode > 0){//성공
+
+		}).done(function(data) {
+			if (data.resultCode > 0) {//성공
 				alert(data.Msg);
 				location.href = "/login/loginView.do";
-			}else{					//실패
+			} else { //실패
 				alert(data.Msg);
 			}
 		})
@@ -283,7 +296,7 @@ $(document).ready(function () {
 				</div>
 
 				<div class="form-group text-center">
-					<a href="javascript:signSub();" class="btn btn-primary"> 회원가입<i
+					<a href="javascript:getKey();" class="btn btn-primary"> 회원가입<i
 						class="fa fa-check spaceLeft"></i>
 					</a> <a href="javascript:back();" class="btn btn-warning"> 가입취소<i
 						class="fa fa-times spaceLeft"></i>
