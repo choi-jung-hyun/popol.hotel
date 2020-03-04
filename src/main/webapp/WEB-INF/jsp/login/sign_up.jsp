@@ -18,6 +18,12 @@
 <script src="/resources/js/bootstrap.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/resources/js//api/daumAddr.js"></script>
+<script src="/resources/js/rsa/jsbn.js"></script>
+<script src="/resources/js/rsa/prng4.js"></script>
+<script src="/resources/js/rsa/rng.js"></script>
+<script src="/resources/js/rsa/rsa.js"></script>
+
+
 <script>
 $(document).ready(function () {
 	   $(function () {
@@ -167,6 +173,10 @@ $(document).ready(function () {
 	}
 
 	function signSub(map) {
+		//RSA 암호화
+		var rsa = new RSAKey();
+		rsa.setPublic(map.pubKeyModule, map.pubKeyExponent);
+		
 		//이름 공백체크
 		if ($("#userNm").val() == '' || $("#userNm").val() == null) {
 			alert("이름에 공백을 입력할 수 없습니다.");
@@ -220,14 +230,14 @@ $(document).ready(function () {
 			alert("이메일 중복 체크를 확인해주세요.");
 			return false;
 		}
-
+		
 		$.ajax({
 			type : 'POST',
 			url : '/member/sign_upAct.do',
 			data : {
 				userNm : $("#userNm").val(),
-				userEmail : $("#userEmail").val(),
-				userPass : $("#userPw").val(),
+				userEmail : rsa.encrypt($("#userEmail").val()),
+				userPass : rsa.encrypt($("#userPw").val()),
 				userPhone : $("#userPhone").val(),
 				post_code : $("#post_code").val(),
 				addr : $("#addr").val(),

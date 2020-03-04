@@ -3,6 +3,8 @@ package com.web.test.login.controller;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
@@ -32,15 +34,14 @@ public class RSAUtil {
             keyFactory = KeyFactory.getInstance("RSA");
             cipher = Cipher.getInstance("RSA");
         } catch (Exception e) {
-            logger.warn("RSAUtil 占쏙옙占쏙옙 占쏙옙占쏙옙.", e);
+            logger.warn("RSAUtil 생성 실패.", e);
         }
     }
 
-	/**
-	 * 占쏙옙占싸울옙 키占쏙옙占쏙옙 占쏙옙占쏙옙 RSA 占쏙옙占쏙옙
-	 * 
-	 * @return vo.other.RSA
-	 **/
+	  /** 새로운 키값을 가진 RSA 생성
+     *  @return vo.other.RSA **/
+
+
 	public static Map<String, Object>  createRSA() {
 		 Map<String, Object> map = null;
 		try {
@@ -62,20 +63,17 @@ public class RSAUtil {
 		return map;
 	}
 
-	/**
-	 * 占쏙옙占쏙옙키占쏙옙 占싱울옙占쏙옙 RSA 占쏙옙호화
-	 * 
-	 * @param privateKey    session占쏙옙 占쏙옙占쏙옙占� PrivateKey
-	 * @param encryptedText 占쏙옙호화占쏙옙 占쏙옙占쌘울옙
-	 **/
-	public String getDecryptText(PrivateKey privateKey, String encryptedText) throws Exception {
+	/** 개인키를 이용한 RSA 복호화
+     *  @param privateKey session에 저장된 PrivateKey
+     *  @param encryptedText 암호화된 문자열 **/
+	public static String getDecryptText(PrivateKey privateKey, String encryptedText) throws Exception {
 		cipher.init(Cipher.DECRYPT_MODE, privateKey);
 		byte[] decryptedBytes = cipher.doFinal(hexToByteArray(encryptedText));
 		return new String(decryptedBytes, "UTF-8");
 	}
 
-	// 16占쏙옙占쏙옙 占쏙옙占쌘울옙占쏙옙 byte 占썼열占쏙옙 占쏙옙환
-	private byte[] hexToByteArray(String hex) {
+	// 16진수 문자열을 byte 배열로 변환
+	private static byte[] hexToByteArray(String hex) {
 		if (hex == null || hex.length() % 2 != 0) {
 			return new byte[] {};
 		}
@@ -87,4 +85,30 @@ public class RSAUtil {
 		}
 		return bytes;
 	}
+	
+	public static String sha256_enc(String pwd) {
+	    StringBuffer hexString = new StringBuffer();
+	 
+	    try {
+	 
+	        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	        byte[] hash = digest.digest(pwd.getBytes("UTF-8"));
+	 
+	        for (int i = 0; i < hash.length; i++) {
+	            String hex = Integer.toHexString(0xff & hash[i]);
+	 
+	            if (hex.length() == 1) {
+	                hexString.append('0');
+	            }
+	 
+	            hexString.append(hex);
+	        }
+	 
+	    } catch (Exception ex) {
+	        throw new RuntimeException(ex);
+	    }
+	 
+	    return hexString.toString();
+	}
+
 }

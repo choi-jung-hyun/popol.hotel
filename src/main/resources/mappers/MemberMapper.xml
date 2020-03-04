@@ -22,7 +22,7 @@
 		#{addr},
 		#{detail_addr},
 		SYSDATE,
-		'Y'
+		#{use_yn}
 	)
 </insert>
 
@@ -36,8 +36,7 @@
 		<if test="userEmail != null and userEmail != ''">
 			AND USER_ID = #{userEmail}
 		</if>
-		
-	
 
 </select>
+
 </mapper>

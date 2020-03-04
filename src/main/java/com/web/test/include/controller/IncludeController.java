@@ -24,11 +24,14 @@ public class IncludeController {
 	Map<String, Object> encgetKey( HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		Map<String,Object> map = RSAUtil.createRSA();
-		PrivateKey privateKey = (PrivateKey) map.get("privateKey");
+		PrivateKey privateKey = (PrivateKey) map.get("privateKey");//생성한 비밀키를 꺼냄
 		//개인키를 session 에 저장한다.
-		request.getSession().setAttribute("_RSA_WEB_Key_", privateKey);
+		request.getSession().setAttribute("_RSA_WEB_Key_", privateKey);//꺼낸 비밀키를 세션에 저장
 
-		return map;
+		HashMap<String, Object> rsa = new HashMap<String, Object>();
+		rsa.put("pubKeyModule", map.get("pubKeyModule"));
+		rsa.put("pubKeyExponent", map.get("pubKeyExponent"));
+		return rsa;
 	}
 	
 	
