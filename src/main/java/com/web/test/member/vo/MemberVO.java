@@ -11,23 +11,10 @@ public class MemberVO {
 	private String detail_addr;
 	private String reg_dt;
 	private String use_yn;
+	private String SESSIONKEY;
+	private String SESSIONLIMIT;
 	
-	public MemberVO() {
-	}
-
-	public MemberVO(String userEmail, String userPass, String userNm, String userPhone, String post_code, String addr,
-			String detail_addr, String reg_dt, String use_yn) {
-		this.userEmail = userEmail;
-		this.userPass = userPass;
-		this.userNm = userNm;
-		this.userPhone = userPhone;
-		this.post_code = post_code;
-		this.addr = addr;
-		this.detail_addr = detail_addr;
-		this.reg_dt = reg_dt;
-		this.use_yn = use_yn;
-	}
-
+	
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -98,6 +85,22 @@ public class MemberVO {
 
 	public void setUse_yn(String use_yn) {
 		this.use_yn = use_yn;
+	}
+
+	public String getSESSIONKEY() {
+		return SESSIONKEY;
+	}
+
+	public void setSESSIONKEY(String sESSIONKEY) {
+		SESSIONKEY = sESSIONKEY;
+	}
+
+	public String getSESSIONLIMIT() {
+		return SESSIONLIMIT;
+	}
+
+	public void setSESSIONLIMIT(String sESSIONLIMIT) {
+		SESSIONLIMIT = sESSIONLIMIT;
 	}
 	
 	

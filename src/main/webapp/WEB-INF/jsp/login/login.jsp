@@ -113,9 +113,60 @@ margin-left: 4px;
 	<script src="/resources/js/rsa/rsa.js"></script>
 	<!--RSA 끝  -->
 	<script>
+	
 	function goSign_up(){
 		location.href = '/member/goSign_up.do';
 	}
+	
+	function getKey() {
+		$.ajax({
+			type : 'POST',
+			url : '/include/getKey.do'
+
+		}).done(function(map) {
+			loginProc(map);
+			console.log(map);
+		})
+	}
+	
+	function loginProc(map){
+		//RSA 암호화
+		var rsa = new RSAKey();
+		rsa.setPublic(map.pubKeyModule, map.pubKeyExponent);
+		
+		if($("#userEmail").val() == '' || $("#userEmail").val() == null){
+			alert("이메일을 입력해주세요.");
+			return false;
+		}
+		
+		if($("#userPw").val() == '' || $("#userPw").val() == null){
+			alert("패스워드를 입력해주세요.");
+			return false;
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : '/login/loginProc.do',
+			data : {
+				userEmail : rsa.encrypt($("#userEmail").val()),
+				userPw : rsa.encrypt($("#userPw").val()),
+				keepLogin : $("input:checkbox[id='keepLogin']").is(":checked") == true ? 'Y' : 'N'
+			}
+		
+		}).done(function(data){
+			//로그인성공
+			if(data.resultCode == 1){
+				alert(data.msg);
+				location.href = '/main/main.do';
+			}else{
+				alert(data.msg);
+			}
+			
+			
+			
+		})
+	}
+	
 	</script>
 </head>
 <body>
@@ -136,20 +187,20 @@ margin-left: 4px;
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="이름">
+						<input type="email" class="form-control" id="userEmail" placeholder="이메일">
 						
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="비밀번호">
+						<input type="password" class="form-control" id="userPw" placeholder="비밀번호">
 					</div>
 					<div class="row align-items-center remember">
-						<input type="checkbox">아이디 저장
+						<input type="checkbox" id="keepLogin">아이디 저장
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Login" class="btn float-right login_btn">
+						<a href="javascript:getKey();" class="btn float-right login_btn">Login</a>
 					</div>
 				</form>
 			</div>
