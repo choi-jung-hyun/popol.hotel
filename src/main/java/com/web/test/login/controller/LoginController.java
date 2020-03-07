@@ -13,11 +13,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.web.test.login.service.LoginService;
 import com.web.test.login.vo.LoginVO;
 import com.web.test.member.vo.MemberVO;
@@ -29,8 +31,16 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 	
+	@Autowired
+	NaverLoginBO NaverLoginBO;
+	
 	@RequestMapping("/loginView.do")
 	public String login(HttpSession session, Model model) {
+		
+	    String naverAuthUrl = NaverLoginBO.getAuthorizationUrl(session);
+
+	    /* 생성한 인증 URL을 View로 전달 */
+	    model.addAttribute("naver_url", naverAuthUrl);
 		
 		return "/login/login";
 	}
@@ -126,4 +136,16 @@ public class LoginController {
 		return mav;
 	}
 	
+	@RequestMapping("/naverLoginProc.do")
+	public String naverLoginProc(ModelMap model, String code, String state, HttpSession session) throws Exception{
+		System.out.println("네이버 로그인성공");
+		  /* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
+	    OAuth2AccessToken oauthToken = NaverLoginBO.getAccessToken(session, code, state);
+	    String apiResult = NaverLoginBO.getUserProfile(oauthToken);
+	    System.out.println(apiResult);
+	    model.addAttribute("result", apiResult);
+
+		return "/login/naverLoginProc";
+		
+	}
 }

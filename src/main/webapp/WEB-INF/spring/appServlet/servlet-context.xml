@@ -29,6 +29,7 @@
            <exclude-mapping path="/login/*.do"/>
            <exclude-mapping path="/main/main.do"/>
            <exclude-mapping path="/include/getKey.do"/>
+           <exclude-mapping path="/member/*.do"/>
            <beans:bean id="LoginInterceptor" class="com.web.test.login.controller.LoginInterceptor"/>
        </interceptor>
     </interceptors>

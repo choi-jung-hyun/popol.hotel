@@ -95,6 +95,8 @@ margin-left: 4px;
 }
 </style>
 	<title>Login</title>
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+ 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<!--template ½ÃÀÛ  -->
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -201,7 +203,9 @@ margin-left: 4px;
 					</div>
 					<div class="form-group">
 						<a href="javascript:getKey();" class="btn float-right login_btn">Login</a>
+					  <a href="${naver_url}"><img height="30" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
 					</div>
+					
 				</form>
 			</div>
 			<div class="card-footer">
