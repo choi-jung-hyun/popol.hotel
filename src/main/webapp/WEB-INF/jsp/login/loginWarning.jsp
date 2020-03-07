@@ -8,9 +8,9 @@
 <title>loginWarning</title>
 <script>
 	$(document).ready(function() {
-		alert("로그인 후 이용해주시기 바랍니다.").then(function(){
-			location.href = "/login/loginView.do";
-		})
+		alert("로그인 후 이용해주시기 바랍니다.");
+		location.href = "/login/loginView.do";
+		
 		
 	});
 </script>

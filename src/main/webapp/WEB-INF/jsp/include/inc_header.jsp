@@ -38,7 +38,7 @@ function goLogout(){
 		class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
 		id="ftco-navbar">
 		<div class="container">
-			<a class="navbar-brand" href="index.html">Adventure</a>
+			<a class="navbar-brand" href="javascript:goHome();">Adventure</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#ftco-nav" aria-controls="ftco-nav"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -53,10 +53,15 @@ function goLogout(){
 					<li class="nav-item"><a href="javascript:goHotels();" class="nav-link">Hotels</a></li>
 					<li class="nav-item"><a href="javascript:goBlog();"   class="nav-link">Blog</a></li>
 					<li class="nav-item"><a href="javascript:goContact();"class="nav-link">Contact</a></li>
-					<li class="nav-item"><a href="javascript:goLogout();" class="nav-link">logout</a></li>
-					<c:if test="${empty loginId}">
-						<li class="nav-item"><a href="javascript:goLogin();" class="nav-link">Login</a></li>
-					</c:if>
+					<li class="nav-item"><a href="javascript:goBoard();" class="nav-link">Board</a></li>
+					<c:choose>
+						<c:when test="${!empty loginId}">
+							<li class="nav-item"><a href="javascript:goLogout();" class="nav-link">Logout</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="nav-item"><a href="javascript:goLogin();"  class="nav-link">Login</a></li>
+						</c:otherwise>
+					</c:choose>		
 				</ul>
 			</div>
 		</div>

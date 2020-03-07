@@ -23,6 +23,16 @@
 	
 	<context:component-scan base-package="com.web.test" />
 	
-	
+	<interceptors>
+       <interceptor>
+           <mapping path="/**/*.do"/>
+           <exclude-mapping path="/login/*.do"/>
+           <exclude-mapping path="/main/main.do"/>
+           <exclude-mapping path="/include/getKey.do"/>
+           <beans:bean id="LoginInterceptor" class="com.web.test.login.controller.LoginInterceptor"/>
+       </interceptor>
+    </interceptors>
+
+
 	
 </beans:beans>
