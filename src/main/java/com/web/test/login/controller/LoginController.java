@@ -184,19 +184,16 @@ public class LoginController {
 				vo2.setUserEmail(id);
 				vo2.setSnsEmail(email);
 				vo2.setSnsType("NAVER");
-
+				
 				int result = memberService.snsSign_upAct(vo2);
-
 				if (result > 0) {
 					System.out.println("네이버 로그인 프로필 저장성공.");
 				} else {
 					System.out.println("네이버 로그인 프로필 저장 실패.");
-					return "/login/loginView";
 				}
 
 			}
 
-			HashMap<String, Object> resultMap = new HashMap<String, Object>();
 			// 기존 loginId 세션 값이 존재한다면 기존값 제거
 			if (session.getAttribute("loginId") != null) {
 				session.removeAttribute("loginId");

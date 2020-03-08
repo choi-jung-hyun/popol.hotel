@@ -33,12 +33,12 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, Object> sign_upAct(MemberVO vo, HttpSession session,HttpServletRequest request, Model model)throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		//����Ű ���ǿ��� ������
+		//세션에저장된 RSA Key를 가져와서 복호화 후 sha256 암호화
 		PrivateKey key = (PrivateKey) request.getSession().getAttribute("_RSA_WEB_Key_");
-		String Email = RSAUtil.getDecryptText(key, vo.getUserEmail());//RSA ���̵� ��ȣȭ
-		String pw = RSAUtil.getDecryptText(key, vo.getUserPass());//RSA ��й�ȣ ��ȣȭ
+		String Email = RSAUtil.getDecryptText(key, vo.getUserEmail());//RSA 복호화
+		String pw = RSAUtil.getDecryptText(key, vo.getUserPass());//RSA 복호화
 		vo.setUserEmail(Email);
-		vo.setUserPass(RSAUtil.sha256_enc(pw));//sha256 ��ȣȭ�� DB����
+		vo.setUserPass(RSAUtil.sha256_enc(pw));//sha256 암호화
 		vo.setUse_yn("Y");
 		int result = memberService.insertMember(vo);
 		
