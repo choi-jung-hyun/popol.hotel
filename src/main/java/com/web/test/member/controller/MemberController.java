@@ -33,20 +33,20 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, Object> sign_upAct(MemberVO vo, HttpSession session,HttpServletRequest request, Model model)throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		//°³ÀÎÅ° ¼¼¼Ç¿¡¼­ °¡Á®¿È
+		//ï¿½ï¿½ï¿½ï¿½Å° ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		PrivateKey key = (PrivateKey) request.getSession().getAttribute("_RSA_WEB_Key_");
-		String Email = RSAUtil.getDecryptText(key, vo.getUserEmail());//RSA ¾ÆÀÌµğ º¹È£È­
-		String pw = RSAUtil.getDecryptText(key, vo.getUserPass());//RSA ºñ¹Ğ¹øÈ£ º¹È£È­
+		String Email = RSAUtil.getDecryptText(key, vo.getUserEmail());//RSA ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½È£È­
+		String pw = RSAUtil.getDecryptText(key, vo.getUserPass());//RSA ï¿½ï¿½Ğ¹ï¿½È£ ï¿½ï¿½È£È­
 		vo.setUserEmail(Email);
-		vo.setUserPass(RSAUtil.sha256_enc(pw));//sha256 ¾ÏÈ£È­ÈÄ DBÀúÀå
+		vo.setUserPass(RSAUtil.sha256_enc(pw));//sha256 ï¿½ï¿½È£È­ï¿½ï¿½ DBï¿½ï¿½ï¿½ï¿½
 		vo.setUse_yn("Y");
 		int result = memberService.insertMember(vo);
 		
 		if(result > 0) {
-			map.put("Msg", "È¸¿ø°¡ÀÔ¿¡ ¼º°ø Çß½À´Ï´Ù.");
+			map.put("Msg", "íšŒì›ê°€ì… ì„±ê³µ!");
 			map.put("resultCode","1");
 		}else {
-			map.put("Msg", "È¸¿ø°¡ÀÔ¿¡ ½ÇÆĞ Çß½À´Ï´Ù.");
+			map.put("Msg", "íšŒì›ê°€ì… ì‹¤íŒ¨! ë‹¤ì‹œì‹œë„í•´ì£¼ì„¸ìš”.");
 			map.put("resultCode","-1");
 		}
 		return map;
@@ -59,12 +59,13 @@ public class MemberController {
 		int result = memberService.email_check(vo);
 		
 		if(result > 0) {
-			map.put("Msg", "ÀÌ¹Ì Áßº¹µÈ ÀÌ¸ŞÀÏ ÀÔ´Ï´Ù.");
+			map.put("Msg", "ì¤‘ë³µí™•ì¸ ì„±ê³µ!");
 			map.put("resultCode","1");
 		}else {
-			map.put("Msg", "»ç¿ëÇÒ ¼ö ÀÖ´Â ÀÌ¸ŞÀÏÀÔ´Ï´Ù.");
+			map.put("Msg", "ì´ë¯¸ì‚¬ìš©ì¤‘ì¸ ì•„ì´ë””ì…ë‹ˆë‹¤.");
 			map.put("resultCode","-1");
 		}
 		return map;
 	}
+	
 }

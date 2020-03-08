@@ -1,7 +1,5 @@
 package com.web.test.login.controller;
 
-
-
 import java.sql.Date;
 import java.util.HashMap;
 
@@ -10,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,110 +17,121 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.WebUtils;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.web.test.login.service.LoginService;
 import com.web.test.login.vo.LoginVO;
+import com.web.test.member.service.MemberService;
 import com.web.test.member.vo.MemberVO;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-	
+
 	@Autowired
 	LoginService loginService;
-	
+
+	@Autowired
+	MemberService memberService;
+
 	@Autowired
 	NaverLoginBO NaverLoginBO;
-	
+
 	@RequestMapping("/loginView.do")
 	public String login(HttpSession session, Model model) {
-		
-	    String naverAuthUrl = NaverLoginBO.getAuthorizationUrl(session);
 
-	    /* »ı¼ºÇÑ ÀÎÁõ URLÀ» View·Î Àü´Ş */
-	    model.addAttribute("naver_url", naverAuthUrl);
-		
+		String naverAuthUrl = NaverLoginBO.getAuthorizationUrl(session);
+
+		/* ìƒì„±í•œ ì¸ì¦ URLì„ Viewë¡œ ì „ë‹¬ */
+		model.addAttribute("naver_url", naverAuthUrl);
+
 		return "/login/login";
 	}
-	//·Î±×ÀÎÇØ¾ßÇÏ´Â±â´É »ç¿ë½Ã 
+
+	// ë¡œê·¸ì¸í•´ì•¼í•˜ëŠ”ê¸°ëŠ¥ ì‚¬ìš©ì‹œ
 	@RequestMapping("/loginWarning.do")
 	public String loginWarning() {
-		
+
 		return "/login/loginWarning";
 	}
-	
+
+	// ì¼ë°˜ë¡œê·¸ì¸
 	@RequestMapping("/loginProc.do")
 	@ResponseBody
-	public HashMap<String, Object> loginProc(LoginVO vo,HttpSession session,HttpServletRequest request,HttpServletResponse response, Model model)throws Exception {
-		//°á°ú ¸®ÅÏ map »ı¼º
+	public HashMap<String, Object> loginProc(LoginVO vo, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response, Model model) throws Exception {
+		// ê²°ê³¼ ë¦¬í„´ map ìƒì„±
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		
-		//±âÁ¸ loginId ¼¼¼Ç °ªÀÌ Á¸ÀçÇÑ´Ù¸é ±âÁ¸°ª Á¦°Å
-		if(session.getAttribute("loginId") != null) {
+
+		// ê¸°ì¡´ loginId ì„¸ì…˜ ê°’ì´ ì¡´ì¬í•œë‹¤ë©´ ê¸°ì¡´ê°’ ì œê±°
+		if (session.getAttribute("loginId") != null) {
 			session.removeAttribute("loginId");
 		}
-		
-		MemberVO login =  loginService.memberInfo(vo);// service¿¡¼­ rsa sha º¹È£È­ ¹× ¾ÏÈ£È­ ÁøÇà
-		
-		//·Î±×ÀÎ ½ÇÆĞ½Ã
-		if(login == null) {
+
+		MemberVO login = loginService.memberInfo(vo);// serviceì—ì„œ rsa sha ë³µí˜¸í™” ë° ì•”í˜¸í™” ì§„í–‰
+
+		// ë¡œê·¸ì¸ ì‹¤íŒ¨ì‹œ
+		if (login == null) {
 			resultMap.put("resultCode", -1);
-			resultMap.put("msg", "È¸¿øÁ¤º¸°¡ À¯È¿ÇÏÁö ¾Ê½À´Ï´Ù. ·Î±×ÀÎÀ» ´Ù½Ã ½ÃµµÇØÁÖ¼¼¿ä.");
-		
-		//·Î±×ÀÎ ¼º°ø½Ã
-		}else {
-		
-			//·Î±×ÀÎ ¼¼¼Ç »ı¼º ÈÄ »ç¿ëÀÚ Á¤º¸¸¦ ´ãÀ½
+			resultMap.put("msg", "íšŒì›ì •ë³´ê°€ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. ë¡œê·¸ì¸ì„ ë‹¤ì‹œ ì‹œë„í•´ì£¼ì„¸ìš”.");
+
+			// ë¡œê·¸ì¸ ì„±ê³µì‹œ
+		} else {
+
+			// ë¡œê·¸ì¸ ì„¸ì…˜ ìƒì„± í›„ ì‚¬ìš©ì ì •ë³´ë¥¼ ë‹´ìŒ
 			request.getSession().setAttribute("loginId", login);
 			request.getSession().setMaxInactiveInterval(60 * 30);
-			// ·Î±×ÀÎ½Ã ÀÚµ¿·Î±×ÀÎ Å¬¸¯ ¿©ºÎ È®ÀÎ
-			if(vo.getKeepLogin().equals("Y")) {
-				System.out.println("ÀÚµ¿·Î±×ÀÎ Å¬¸¯");
-				
-				// ÄíÅ°¸¦ »ı¼ºÇÏ°í »ı¼ºÇÑ ¼¼¼ÇÀÇ id¸¦ ÄíÅ°¿¡ ÀúÀå.
-				Cookie cookie = new Cookie("loginCookie", request.getSession().getId());// interceptor¿¡¼­ »ç¿ë
-				// ÄíÅ°¸¦ Ã£À» °æ·Î¸¦ ÄÁÅØ½ºÆ® °æ·Î º¯°æ.
+			// ë¡œê·¸ì¸ì‹œ ìë™ë¡œê·¸ì¸ í´ë¦­ ì—¬ë¶€ í™•ì¸
+			if (vo.getKeepLogin().equals("Y")) {
+				System.out.println("ìë™ë¡œê·¸ì¸ í´ë¦­");
+
+				// ì¿ í‚¤ë¥¼ ìƒì„±í•˜ê³  ìƒì„±í•œ ì„¸ì…˜ì˜ idë¥¼ ì¿ í‚¤ì— ì €ì¥.
+				Cookie cookie = new Cookie("loginCookie", request.getSession().getId());// interceptorì—ì„œ ì‚¬ìš©
+				// ì¿ í‚¤ë¥¼ ì°¾ì„ ê²½ë¡œë¥¼ ì»¨í…ìŠ¤íŠ¸ ê²½ë¡œ ë³€ê²½.
 				cookie.setPath("/");
-				//À¯È¿±â°£ 7ÀÏ·Î ¼³Á¤
+				// ìœ íš¨ê¸°ê°„ 7ì¼ë¡œ ì„¤ì •
 				int amount = 60 * 60 * 24 * 7;
 				cookie.setMaxAge(amount);
-				//ÄíÅ° Àû¿ë
+				// ì¿ í‚¤ ì ìš©
 				response.addCookie(cookie);
-				//ÇöÀç½Ã°£ + 7ÀÏÀ» ´õÇÑ°ª
-				Date sessionLimit = new Date(System.currentTimeMillis() + (1000*amount));
-				// ÇöÀç ¼¼¼Ç id¿Í À¯È¿½Ã°£À» »ç¿ëÀÚ Å×ÀÌºí¿¡ ÀúÀå
-				
-				HashMap<String, Object> map = new HashMap<String, Object>();	
-				map.put("SESSIONID", request.getSession().getId()); //¼¼¼Ç ID
-				map.put("SESSIONLIMIT", sessionLimit);//¼¼¼Ç¸¸·á ±â°£
-				map.put("loginId", login);//·Î±×ÀÎ ½ÃµµÇÏ´Â °èÁ¤ÀÇ Á¤º¸
+				// í˜„ì¬ì‹œê°„ + 7ì¼ì„ ë”í•œê°’
+				Date sessionLimit = new Date(System.currentTimeMillis() + (1000 * amount));
+				// í˜„ì¬ ì„¸ì…˜ idì™€ ìœ íš¨ì‹œê°„ì„ ì‚¬ìš©ì í…Œì´ë¸”ì— ì €ì¥
+
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("SESSIONID", request.getSession().getId()); // ì„¸ì…˜ ID
+				map.put("SESSIONLIMIT", sessionLimit);// ì„¸ì…˜ë§Œë£Œ ê¸°ê°„
+				map.put("loginId", login);// ë¡œê·¸ì¸ ì‹œë„í•˜ëŠ” ê³„ì •ì˜ ì •ë³´
 				loginService.keepLogin(map);
 			}
 
 			resultMap.put("resultCode", 1);
-			resultMap.put("msg", "·Î±×ÀÎ ¼º°ø!");
+			resultMap.put("msg", "ë¡œê·¸ì¸ ì„±ê³µ!");
 		}
-		 System.out.println(resultMap);
-			
+		System.out.println(resultMap);
+
 		return resultMap;
 	}
-	
+
+	// ì¼ë°˜ë¡œê·¸ì•„ì›ƒ
 	@RequestMapping("/logout.do")
-	public ModelAndView loginProc(LoginVO vo,HttpSession session,HttpServletRequest request,HttpServletResponse response)throws Exception {
-	
-		//¼¼¼ÇÀÌ ³²¾ÆÀÖ´Â°æ¿ì, ·Î±×ÀÎµÈ »óÈ²
-		if(session.getAttribute("loginId") != null) {
+	public ModelAndView loginProc(LoginVO vo, HttpSession session, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		// ì„¸ì…˜ì´ ë‚¨ì•„ìˆëŠ”ê²½ìš°, ë¡œê·¸ì¸ëœ ìƒí™©
+		if (session.getAttribute("loginId") != null) {
 			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
-			
-			//Äí±â Á¤º¸°¡ Á¸ÀçÇÏ´Â °æ¿ì
-			if(loginCookie != null) {
+
+			// ì¿ ê¸° ì •ë³´ê°€ ì¡´ì¬í•˜ëŠ” ê²½ìš°
+			if (loginCookie != null) {
 				loginCookie.setPath("/");
 				loginCookie.setMaxAge(0);
 				response.addCookie(loginCookie);
-				
-				//·Î±×ÀÎµÈ È¸¿ø ¼¼¼Ç ½Ã°£ Àç¼³Á¤
+
+				// ë¡œê·¸ì¸ëœ íšŒì› ì„¸ì…˜ ì‹œê°„ ì¬ì„¤ì •
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("SESSIONID", session.getId());
 				Date sessionLimit = new Date(System.currentTimeMillis());
@@ -128,24 +139,78 @@ public class LoginController {
 				map.put("loginId", session.getAttribute("loginId"));
 				loginService.keepLogin(map);
 			}
-			// loginId ¼¼¼Ç »èÁ¦
+			// loginId ì„¸ì…˜ ì‚­ì œ
 			request.getSession().removeAttribute("loginId");
-			
+
 		}
 		ModelAndView mav = new ModelAndView("redirect:/main/main.do");
 		return mav;
 	}
-	
-	@RequestMapping("/naverLoginProc.do")
-	public String naverLoginProc(ModelMap model, String code, String state, HttpSession session) throws Exception{
-		System.out.println("³×ÀÌ¹ö ·Î±×ÀÎ¼º°ø");
-		  /* ³×¾Æ·Î ÀÎÁõÀÌ ¼º°øÀûÀ¸·Î ¿Ï·áµÇ¸é code ÆÄ¶ó¹ÌÅÍ°¡ Àü´ŞµÇ¸ç ÀÌ¸¦ ÅëÇØ access tokenÀ» ¹ß±Ş */
-	    OAuth2AccessToken oauthToken = NaverLoginBO.getAccessToken(session, code, state);
-	    String apiResult = NaverLoginBO.getUserProfile(oauthToken);
-	    System.out.println(apiResult);
-	    model.addAttribute("result", apiResult);
 
-		return "/login/naverLoginProc";
+	// ë„¤ì´ë²„ ë¡œê·¸ì¸, íšŒì›ê°€ì…
+	@RequestMapping("/naverLoginProc.do")
+	public String naverLoginProc(Model model, String code, String state, HttpSession session,
+			HttpServletRequest request) throws Exception {
+
+
+		/* ë„¤ì•„ë¡œ ì¸ì¦ì´ ì„±ê³µì ìœ¼ë¡œ ì™„ë£Œë˜ë©´ code íŒŒë¼ë¯¸í„°ê°€ ì „ë‹¬ë˜ë©° ì´ë¥¼ í†µí•´ access tokenì„ ë°œê¸‰ */
+		OAuth2AccessToken oauthToken = NaverLoginBO.getAccessToken(session, code, state);
+		String apiResult = NaverLoginBO.getUserProfile(oauthToken);
+		System.out.println(apiResult);
+
+		JSONParser parser = new JSONParser();
+		JSONObject obj = (JSONObject) parser.parse(apiResult);
+
+		String resultCode = (String) obj.get("resultcode");
+
+		if (resultCode.equals("00")) {// api ì½œë°±ë°›ì€ ì‚¬ìš©ì í”„ë¡œí•„ì„ DBì— ì €ì¥. -- 00 ë¡œê·¸ì¸ì„±ê³µ ë¡œê·¸ì¸ ì—°ë™ ê°œë…ì´ì•„ë‹˜. ê°ìì˜ ì•„ì´ë””ë¼ëŠ” ìƒê°.
+
+			JSONObject response = (JSONObject) obj.get("response");
+
+			String name = (String) response.get("name");
+			String id = (String) response.get("id");// ì´ê²Œ userEmailë¡œ ì‚¬ìš©í• ì˜ˆì •
+			String email = (String) response.get("email");// snsEmail ì´ë¼ëŠ” ì»¬ëŸ¼ì¶”ê°€í• êº¼ì„. ë„¤ì´ë²„,ì¹´ì¹´ì˜¤ë¡œ ë¡œê·¸ì¸í•œì‚¬ëŒì˜ ì´ë©”ì¼ì£¼ì†Œ
+
+			MemberVO vo = new MemberVO();
+			vo.setUserEmail(id);
+			// sns ë¡œê·¸ì¸í•œì‚¬ëŒ ë””ë¹„ ì •ë³´ ê¸°ì… í™•ì¸
+			int snsSignUp_check = memberService.email_check(vo);
+			// sns ë°ì´í„° ì •ë³´ ê¸°ì…ì•ˆë˜ìˆëŠ”ê²½ìš°
+			if (snsSignUp_check < 1) {
+
+				MemberVO vo2 = new MemberVO();
+				vo2.setUse_yn("Y");
+				vo2.setUserNm(name);
+				vo2.setUserEmail(id);
+				vo2.setSnsEmail(email);
+				vo2.setSnsType("NAVER");
+
+				int result = memberService.snsSign_upAct(vo2);
+
+				if (result > 0) {
+					System.out.println("ë„¤ì´ë²„ ë¡œê·¸ì¸ í”„ë¡œí•„ ì €ì¥ì„±ê³µ.");
+				} else {
+					System.out.println("ë„¤ì´ë²„ ë¡œê·¸ì¸ í”„ë¡œí•„ ì €ì¥ ì‹¤íŒ¨.");
+					return "/login/loginView";
+				}
+
+			}
+
+			HashMap<String, Object> resultMap = new HashMap<String, Object>();
+			// ê¸°ì¡´ loginId ì„¸ì…˜ ê°’ì´ ì¡´ì¬í•œë‹¤ë©´ ê¸°ì¡´ê°’ ì œê±°
+			if (session.getAttribute("loginId") != null) {
+				session.removeAttribute("loginId");
+			}
+
+			// ë””ë¹„ idì™€ apiì—ì„œ ë°›ì€ id ë¹„êµí›„ ê°™ìœ¼ë©´ íšŒì›ì •ë³´ë¥¼ ì„¸ì…˜ì— ë‹´ìŒ.
+			MemberVO login = memberService.snsMemberInfo(vo);
 		
+				// ë¡œê·¸ì¸ ì„¸ì…˜ ìƒì„± í›„ ì‚¬ìš©ì ì •ë³´ë¥¼ ë‹´ìŒ
+				request.getSession().setAttribute("loginId", login);
+				request.getSession().setMaxInactiveInterval((60 * 30) * 24 );
+			}
+		
+		return "/main/main";
+
 	}
 }

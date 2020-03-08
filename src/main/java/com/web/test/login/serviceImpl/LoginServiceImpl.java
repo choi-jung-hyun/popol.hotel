@@ -31,15 +31,15 @@ public class LoginServiceImpl implements LoginService {
 	public MemberVO memberInfo(LoginVO vo) throws Exception{
 		
 		PrivateKey key = (PrivateKey) request.getSession().getAttribute("_RSA_WEB_Key_");
-		String Email = RSAUtil.getDecryptText(key, vo.getUserEmail());//RSA ¾ÆÀÌµğ º¹È£È­
-		String pw = RSAUtil.getDecryptText(key, vo.getUserPw());//RSA ºñ¹Ğ¹øÈ£ º¹È£È­
+		String Email = RSAUtil.getDecryptText(key, vo.getUserEmail());//RSA ë³µí˜¸í™”
+		String pw = RSAUtil.getDecryptText(key, vo.getUserPw());//RSA ë³µí˜¸í™”
 		vo.setUserEmail(Email);
-		vo.setUserPw(RSAUtil.sha256_enc(pw));//sha256 ¾ÏÈ£È­ÈÄ DBÀúÀå
+		vo.setUserPw(RSAUtil.sha256_enc(pw));//sha256 ì•”í˜¸í™”
 		System.out.println(vo.getUserPw());
 		return (MemberVO) loginDAO.memberInfo(vo);
 	}
 	
-	//ÀÚµ¿·Î±×ÀÎ ¼¼¼Ç ID ÀúÀå ·ÎÁ÷
+	//ìë™ë¡œê·¸ì¸ ì„¸ì…˜ì¶”ê°€
 	@Override
 	public void keepLogin(HashMap<String, Object> map) throws Exception{
 		loginDAO.keepLogin(map);
@@ -50,4 +50,5 @@ public class LoginServiceImpl implements LoginService {
 		
 		return (MemberVO)loginDAO.checkUserInfoWithCookie(sessionMap); 
 	}
+	
 }

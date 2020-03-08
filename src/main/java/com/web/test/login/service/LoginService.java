@@ -14,4 +14,6 @@ public interface LoginService {
 	void keepLogin(HashMap<String, Object> map) throws Exception;
 	
 	MemberVO checkUserInfoWithCookie(HashMap<String, Object> sessionMap)throws Exception;
+
+	
 }

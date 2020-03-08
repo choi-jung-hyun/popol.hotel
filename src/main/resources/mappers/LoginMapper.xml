@@ -1,45 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="MemberDAO">
+<mapper namespace="LoginDAO">
 
-<insert id="insertMember" parameterType="com.web.test.member.vo.MemberVO">
-	INSERT INTO TB_MEMBER(
-		USER_NM,
-		USER_ID,
-		USER_PW,
-		USER_PHONE,
-		POST_CODE,
-		ADDR,
-		DETAIL_ADDR,
-		REG_DT,
-		USE_YN
-	) VALUES(
-		#{userNm},
-		#{userEmail},
-		#{userPass},
-		#{userPhone},
-		#{post_code},
-		#{addr},
-		#{detail_addr},
-		SYSDATE,
-		#{use_yn}
-	)
-</insert>
-
-<select id="email_check" resultType="Integer" parameterType="com.web.test.member.vo.MemberVO">
-	SELECT 
-		COUNT(*)
-	FROM 
+<update id="keepLogin" parameterType="map">
+	UPDATE
 		TB_MEMBER
-	WHERE 
-		1=1
-		<if test="userEmail != null and userEmail != ''">
-			AND USER_ID = #{userEmail}
-		</if>
+	SET
+		SESSIONKEY = #{SESSIONID ,jdbcType=VARCHAR},
+		SESSIONLIMIT = #{SESSIONLIMIT ,jdbcType=VARCHAR}
+	WHERE
+		USER_ID = #{loginId.userEmail ,jdbcType=VARCHAR}
+</update>
 
-</select>
-
-<select id="memberInfo" resultType="com.web.test.member.vo.MemberVO" parameterType="com.web.test.login.vo.LoginVO">
+<select id="checkUserInfoWithCookie" resultType="com.web.test.member.vo.MemberVO" parameterType="map">
 	SELECT 
 		USER_NM USERNM,
 		USER_ID USEREMAIL,
@@ -49,19 +22,13 @@
 		ADDR ADDR,
 		DETAIL_ADDR DETAIL_ADDR,
 		REG_DT REG_DT,
-		USE_YN USE_YN,
-		SESSIONKEY SESSIONKEY,
-		SESSIONLIMIT SESSIONLIMIT
+		USE_YN USE_YN
 	FROM 
 		TB_MEMBER
 	WHERE
-		1=1
-		<if test="userEmail != null and userEmail != ''">
-			AND USER_ID = #{userEmail}
-		</if>
-		<if test="userPw != null and userPw != ''">
-			AND USER_PW = #{userPw}
-		</if>
-	
+		SESSIONKEY = #{SESSIONID ,jdbcType=VARCHAR}
+	AND
+		SESSIONLIMIT <![CDATA[ > ]]> SYSDATE
+			
 </select>
 </mapper>

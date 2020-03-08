@@ -23,32 +23,32 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 
 		try {
-			// ·Î±×ÀÎ »óÅÂÀÎÁö ÆÇ´Ü À¯¹«
+			// ë¡œê·¸ì¸ ìƒíƒœì¸ì§€ íŒë‹¨ ìœ ë¬´
 			if (request.getSession().getAttribute("loginId") == null) {
 
-				// ¼¼¼ÇÀÌ nullÀÌ¶ó¸é ÄíÅ° Á¤º¸ È®ÀÎ
+				// ì„¸ì…˜ì´ nullì´ë¼ë©´ ì¿ í‚¤ ì •ë³´ í™•ì¸
 				Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 				if (loginCookie != null) {
-					//ÄíÅ°¿¡¼­ ¼¼¼ÇID¸¦ ²¨³»¿È.
+					//ì¿ í‚¤ì—ì„œ ì„¸ì…˜IDë¥¼ êº¼ë‚´ì˜´.
 					HashMap<String, Object> sessionMap = new HashMap<String, Object>();
 					sessionMap.put("SESSIONID", loginCookie.getValue());
 					
-					// ¼¼¼Ç ID°ªÀ» ±âÁØÀ¸·Î DB¿¡ ÀúÀåµÇÀÖ´Â ·Î±×ÀÎ Á¤º¸¸¦ ½ºÄµ
+					// ì„¸ì…˜ IDê°’ì„ ê¸°ì¤€ìœ¼ë¡œ DBì— ì €ì¥ë˜ìˆëŠ” ë¡œê·¸ì¸ ì •ë³´ë¥¼ ìŠ¤ìº”
 					MemberVO resultMap = (MemberVO) loginService.checkUserInfoWithCookie(sessionMap);
-					//·Î±×ÀÎ Á¤º¸°¡ Á¸Àç
+					//ë¡œê·¸ì¸ ì •ë³´ê°€ ì¡´ì¬
 					if(resultMap != null) {
 						
-						//¼¼¼Ç¿¡ ·Î±×ÀÎ Á¤º¸¸¦ ÀúÀå
+						//ì„¸ì…˜ì— ë¡œê·¸ì¸ ì •ë³´ë¥¼ ì €ì¥
 						request.getSession().setAttribute("loginId", resultMap);
 						request.getSession().setMaxInactiveInterval(60 * 30);
 						return true;
 					}
-				//¼¼¼Çµµ null ÄíÅ°µµ nullÀÎ°æ¿ì ·Î±×ÀÎÆäÀÌÁö·Î º¸³¿
+				//ì„¸ì…˜ë„ null ì¿ í‚¤ë„ nullì¸ê²½ìš° ë¡œê·¸ì¸í˜ì´ì§€ë¡œ ë³´ëƒ„
 				}else {
 					response.sendRedirect(request.getContextPath() + "/login/loginWarning.do");
 					return false;
 				}
-			//·Î±×ÀÎ »óÅÂ ¼¼¼ÇÀÌ ÀÖÀ½.	
+			//ë¡œê·¸ì¸ ìƒíƒœ ì„¸ì…˜ì´ ìˆìŒ.	
 			}else {
 				return true;
 				

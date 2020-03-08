@@ -24,4 +24,16 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDAO.email_check(vo);
 	}
+	
+	@Override
+	public int snsSign_upAct(MemberVO vo)throws Exception{
+		
+		return (int)memberDAO.snsSign_upAct(vo);
+	}
+	
+	@Override
+	public MemberVO snsMemberInfo(MemberVO vo) throws Exception{
+		
+		return memberDAO.snsMemberInfo(vo);
+	}
 }

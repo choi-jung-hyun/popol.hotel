@@ -19,4 +19,12 @@ public class MemberDAO {
 	public int email_check(MemberVO vo) {
 		return sqlSession.selectOne("MemberDAO.email_check", vo);
 	}
+	
+	public int snsSign_upAct(MemberVO vo)throws Exception{
+		return sqlSession.selectOne("MemberDAO.snsSign_upAct",vo);
+	}
+	
+	public MemberVO snsMemberInfo(MemberVO vo) throws Exception{
+		return sqlSession.selectOne("MemberDAO.snsMemberInfo", vo);
+	}
 } 

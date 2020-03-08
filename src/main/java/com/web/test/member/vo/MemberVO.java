@@ -2,19 +2,19 @@ package com.web.test.member.vo;
 
 public class MemberVO {
 
-	private String userEmail;
-	private String userPass;
-	private String userNm;
-	private String userPhone;
-	private String post_code;
-	private String addr;
-	private String detail_addr;
-	private String reg_dt;
-	private String use_yn;
-	private String SESSIONKEY;
-	private String SESSIONLIMIT;
-	
-	
+	private String userEmail;		// 이메일 , 네이버, 카카오 고유아이디
+	private String userPass;		// 패스워드
+	private String userNm;			// 이름
+	private String userPhone;		// 휴대폰번호
+	private String post_code;		// 우편번호
+	private String addr;			// 주소
+	private String detail_addr;		// 상세주소
+	private String reg_dt;			// 회원가입일
+	private String use_yn;			// 회원 탈퇴여부
+	private String SESSIONKEY;		// 자동로그인 세션키
+	private String SESSIONLIMIT;	// 자동로그인 기간
+	private String snsEmail;		// 네이버, 카카오 로그인 email
+	private String snsType;			// sns 타입
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -102,7 +102,21 @@ public class MemberVO {
 	public void setSESSIONLIMIT(String sESSIONLIMIT) {
 		SESSIONLIMIT = sESSIONLIMIT;
 	}
-	
-	
 
+	public String getSnsEmail() {
+		return snsEmail;
+	}
+
+	public void setSnsEmail(String snsEmail) {
+		this.snsEmail = snsEmail;
+	}
+
+	public String getSnsType() {
+		return snsType;
+	}
+
+	public void setSnsType(String snsType) {
+		this.snsType = snsType;
+	}
+	
 }
