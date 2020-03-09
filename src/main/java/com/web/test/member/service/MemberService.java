@@ -9,7 +9,10 @@ public interface MemberService  {
 	
 	int email_check(MemberVO vo)throws Exception;
 	
-	int snsSign_upAct(MemberVO vo)throws Exception;
+	int naverSign_upAct(MemberVO vo)throws Exception;
 
 	MemberVO snsMemberInfo(MemberVO vo) throws Exception;
+	
+	int kakaoSign_upAct(MemberVO vo)throws Exception;
+	
 }

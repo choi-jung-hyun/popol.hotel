@@ -36,6 +36,9 @@
 		<if test="userEmail != null and userEmail != ''">
 			AND USER_ID = #{userEmail}
 		</if>
+		<if test="snsType != null and snsType != ''">
+			AND SNS_TYPE = #{snsType}
+		</if>
 
 </select>
 
@@ -65,7 +68,7 @@
 </select>
 
 
-<insert id="snsSign_upAct" parameterType="com.web.test.member.vo.MemberVO" >
+<insert id="naverSign_upAct" parameterType="com.web.test.member.vo.MemberVO" >
 	INSERT INTO TB_MEMBER(
 		USER_NM,
 		USER_ID,
@@ -97,8 +100,27 @@
 		1=1
 	<if test="userEmail != '' and userEmail != null">
 		AND USER_ID = #{userEmail}
+	</if>
+	<if test="snsType != '' and snsType != null ">
+		AND SNS_TYPE = #{snsType}
 	</if>			
 	
 </select>
+
+<insert id="kakaoSign_upAct" parameterType="com.web.test.member.vo.MemberVO" >
+	INSERT INTO TB_MEMBER(
+		USER_ID,
+		SNS_EMAIL,
+		SNS_TYPE,
+		REG_DT,
+		USE_YN
+	) VALUES(
+		#{userEmail},
+		#{snsEmail},
+		#{snsType},
+		SYSDATE,
+		#{use_yn}
+	)
+</insert>
 
 </mapper>

@@ -26,14 +26,20 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public int snsSign_upAct(MemberVO vo)throws Exception{
+	public int naverSign_upAct(MemberVO vo)throws Exception{
 		
-		return (int)memberDAO.snsSign_upAct(vo);
+		return (int)memberDAO.naverSign_upAct(vo);
 	}
 	
 	@Override
 	public MemberVO snsMemberInfo(MemberVO vo) throws Exception{
 		
 		return memberDAO.snsMemberInfo(vo);
+	}
+	
+	@Override
+	public int kakaoSign_upAct(MemberVO vo)throws Exception{
+		
+		return memberDAO.kakaoSign_upAct(vo);
 	}
 }

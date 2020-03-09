@@ -203,7 +203,8 @@ margin-left: 4px;
 					</div>
 					<div class="form-group">
 						<a href="javascript:getKey();" class="btn float-right login_btn">Login</a>
-					  <a href="${naver_url}"><img height="30" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
+					  	<a href="${naver_url}"><img height="30" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
+					  	<a href="${kakao_url}"><img height="30" src="/resources/images/kakaoLog_btn.png"> </a>
 					</div>
 					
 				</form>

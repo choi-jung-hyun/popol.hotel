@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.WebUtils;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.web.test.login.service.LoginService;
 import com.web.test.login.vo.LoginVO;
@@ -45,9 +46,11 @@ public class LoginController {
 
 		String naverAuthUrl = NaverLoginBO.getAuthorizationUrl(session);
 
-		/* 생성한 인증 URL을 View로 전달 */
-		model.addAttribute("naver_url", naverAuthUrl);
+		String kakaoUrl = KakaoController.getAutorizationUrl(session);
 
+		/* 생성한 인증 URL을 View로 전달 */
+		model.addAttribute("naver_url", naverAuthUrl); // 네이버로그인
+		model.addAttribute("kakao_url", kakaoUrl); // 카카오로그인
 		return "/login/login";
 	}
 
@@ -152,7 +155,6 @@ public class LoginController {
 	public String naverLoginProc(Model model, String code, String state, HttpSession session,
 			HttpServletRequest request) throws Exception {
 
-
 		/* 네아로 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
 		OAuth2AccessToken oauthToken = NaverLoginBO.getAccessToken(session, code, state);
 		String apiResult = NaverLoginBO.getUserProfile(oauthToken);
@@ -173,10 +175,12 @@ public class LoginController {
 
 			MemberVO vo = new MemberVO();
 			vo.setUserEmail(id);
-			// sns 로그인한사람 디비 정보 기입 확인
-			int snsSignUp_check = memberService.email_check(vo);
-			// sns 데이터 정보 기입안되있는경우
-			if (snsSignUp_check < 1) {
+			vo.setSnsType("NAVER");
+			// sns 로그인한사람 회원가입 여부 확인
+			int email_check = memberService.email_check(vo);
+			System.out.println(email_check);
+			// sns 로그인 미회원인경우
+			if (email_check < 1) {
 
 				MemberVO vo2 = new MemberVO();
 				vo2.setUse_yn("Y");
@@ -184,8 +188,8 @@ public class LoginController {
 				vo2.setUserEmail(id);
 				vo2.setSnsEmail(email);
 				vo2.setSnsType("NAVER");
-				
-				int result = memberService.snsSign_upAct(vo2);
+
+				int result = memberService.naverSign_upAct(vo2);
 				if (result > 0) {
 					System.out.println("네이버 로그인 프로필 저장성공.");
 				} else {
@@ -201,13 +205,71 @@ public class LoginController {
 
 			// 디비 id와 api에서 받은 id 비교후 같으면 회원정보를 세션에 담음.
 			MemberVO login = memberService.snsMemberInfo(vo);
-		
-				// 로그인 세션 생성 후 사용자 정보를 담음
-				request.getSession().setAttribute("loginId", login);
-				request.getSession().setMaxInactiveInterval((60 * 30) * 24 );
-			}
-		
-		return "/main/main";
 
+			// 로그인 세션 생성 후 사용자 정보를 담음
+			request.getSession().setAttribute("loginId", login);
+			request.getSession().setMaxInactiveInterval((60 * 30) * 24);
+		}
+
+		return "/main/main";
+	}
+
+	@RequestMapping("/kakaoLogin.do")
+	public String kakaoLogin(String code, HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws Exception {
+
+		// 결과물을 node 담음
+		JsonNode node = KakaoController.getAccessToken(code);
+		// accessToken에 사용자의 로그인 정보가 담겨있음.
+		JsonNode accessToken = node.get("access_token");
+		System.out.println(accessToken);
+		// 사용자 정보
+		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
+		System.out.println(userInfo);
+
+		JsonNode kakao_account = userInfo.path("kakao_account");
+
+		String id = userInfo.path("id").asText(); // 카카오에서 넘겨주는 회원 고유 아이디값
+		String snsEmail = kakao_account.path("email").asText(); // 카카오 로그인 ID
+		System.out.println(id);
+		System.out.println(snsEmail);
+		MemberVO vo = new MemberVO();
+		vo.setUserEmail(id); // 고유 아이디 와 로그인 Type로 아이디 중복확인.
+		vo.setSnsType("KAKAO");
+		// 카카오 로그인유저 회원등록 확인
+		int email_check = memberService.email_check(vo);
+		System.out.println(email_check);
+		// 회원가입시작
+		if (email_check < 1) {
+			MemberVO vo2 = new MemberVO();
+			vo2.setUserEmail(id);// 카카오 고유 ID
+			vo2.setSnsEmail(snsEmail); // 카카오 로그인 ID
+			vo2.setUse_yn("Y");
+			vo2.setSnsType("KAKAO");
+			
+			int result = memberService.kakaoSign_upAct(vo2);
+			
+			//DB 입력 성공
+			if(result > 0) {
+				System.out.println("카카오 회원정보 저장 성공");
+			}else {
+				System.out.println("카카오 회원정보 저장 실패");
+			}
+			
+		}
+
+		// 기존 loginId 세션 값이 존재한다면 기존값 제거
+		if (session.getAttribute("loginId") != null) {
+			session.removeAttribute("loginId");
+		}
+
+		// 디비 id와 api에서 받은 id 비교후 같으면 회원정보를 세션에 담음.
+		MemberVO login = memberService.snsMemberInfo(vo);
+
+		// 로그인 세션 생성 후 사용자 정보를 담음
+		request.getSession().setAttribute("loginId", login);
+		request.getSession().setMaxInactiveInterval((60 * 30) * 24);
+
+		return "/main/main";
 	}
 }
