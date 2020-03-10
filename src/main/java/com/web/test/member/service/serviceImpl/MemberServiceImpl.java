@@ -42,4 +42,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDAO.kakaoSign_upAct(vo);
 	}
+	
+	@Override
+	public int facebookSign_upAct(MemberVO vo) throws Exception{
+		
+		return memberDAO.facebookSign_upAct(vo);
+	}
 }

@@ -11,6 +11,17 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.MissingAuthorizationException;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.User;
+import org.springframework.social.facebook.api.UserOperations;
+import org.springframework.social.facebook.api.impl.FacebookTemplate;
+import org.springframework.social.facebook.connect.FacebookConnectionFactory;
+import org.springframework.social.oauth2.AccessGrant;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -41,6 +52,13 @@ public class LoginController {
 	@Autowired
 	NaverLoginBO NaverLoginBO;
 
+	// 페이스북 로그인 oAuth
+	@Autowired
+	private FacebookConnectionFactory connectionFactory;
+
+	@Autowired
+	private OAuth2Parameters oAuth2Parameters;
+
 	@RequestMapping("/loginView.do")
 	public String login(HttpSession session, Model model) {
 
@@ -48,9 +66,13 @@ public class LoginController {
 
 		String kakaoUrl = KakaoController.getAutorizationUrl(session);
 
+		OAuth2Operations oauthOperations = connectionFactory.getOAuthOperations();
+		String facebook_url = oauthOperations.buildAuthenticateUrl(GrantType.AUTHORIZATION_CODE, oAuth2Parameters);
+
 		/* 생성한 인증 URL을 View로 전달 */
 		model.addAttribute("naver_url", naverAuthUrl); // 네이버로그인
 		model.addAttribute("kakao_url", kakaoUrl); // 카카오로그인
+		model.addAttribute("facebook_url", facebook_url); // 페이스북로그인
 		return "/login/login";
 	}
 
@@ -246,16 +268,16 @@ public class LoginController {
 			vo2.setSnsEmail(snsEmail); // 카카오 로그인 ID
 			vo2.setUse_yn("Y");
 			vo2.setSnsType("KAKAO");
-			
+
 			int result = memberService.kakaoSign_upAct(vo2);
-			
-			//DB 입력 성공
-			if(result > 0) {
+
+			// DB 입력 성공
+			if (result > 0) {
 				System.out.println("카카오 회원정보 저장 성공");
-			}else {
+			} else {
 				System.out.println("카카오 회원정보 저장 실패");
 			}
-			
+
 		}
 
 		// 기존 loginId 세션 값이 존재한다면 기존값 제거
@@ -272,4 +294,89 @@ public class LoginController {
 
 		return "/main/main";
 	}
+
+	@RequestMapping("/facebookLogin.do")
+	public String facebookLogin(String code, HttpServletRequest request, HttpServletResponse response, HttpSession session ) throws Exception {
+
+		try {
+
+			String redirectUri = oAuth2Parameters.getRedirectUri();
+			System.out.println("Redirect URI :" + redirectUri);
+			System.out.println("Code :" + code);
+
+			OAuth2Operations oauthOperations = connectionFactory.getOAuthOperations();
+			AccessGrant accessGrant = oauthOperations.exchangeForAccess(code, redirectUri, null);
+			String accessToken = accessGrant.getAccessToken();
+			System.out.println("AccessToken :" + accessToken);
+			Long expireTime = accessGrant.getExpireTime();
+			System.out.println(expireTime);
+
+			//
+			if (expireTime != null && expireTime < System.currentTimeMillis()) {
+				accessToken = accessGrant.getRefreshToken();
+				System.out.println("accesssToken is expired. refresh token = {}");
+				System.out.println("refreshToken :" + accessToken);
+			}
+
+			Connection<Facebook> connection = connectionFactory.createConnection(accessGrant);
+			Facebook facebook = connection == null ? new FacebookTemplate(accessToken) : connection.getApi();
+			UserOperations userOperation = facebook.userOperations();
+
+			try {
+				String[] fields = { "id", "email", "name" };
+				User userProfile = facebook.fetchObject("me", User.class, fields);
+				System.out.println("유저 이메일 :" + userProfile.getEmail());
+				System.out.println("유저 id :" + userProfile.getId());
+				System.out.println("유저 name :" + userProfile.getName());
+
+				//페이스북 로그인 유저 DB 확인
+				MemberVO vo = new MemberVO();
+				vo.setUserEmail(userProfile.getId());
+				vo.setSnsType("FACEBOOK");
+				
+				int email_check = memberService.email_check(vo);
+				
+				//페이스북 로그인이 처음인 경우
+				if(email_check < 1) {
+					MemberVO vo2 = new MemberVO();
+					vo2.setUserEmail(userProfile.getId());
+					vo2.setSnsEmail(userProfile.getEmail());
+					vo2.setUserNm(userProfile.getName());
+					vo2.setSnsType("FACEBOOK");
+					vo2.setUse_yn("Y");
+					
+					int result = memberService.facebookSign_upAct(vo2);
+					
+					if(result > 0) {
+						System.out.println("페이스북 회원 정보 등록 성공");
+					}else {
+						System.out.println("페이스북 회원 정보 등록 실패");
+					}
+					
+				}
+				
+				// 기존 loginId 세션 값이 존재한다면 기존값 제거
+				if (session.getAttribute("loginId") != null) {
+					session.removeAttribute("loginId");
+				}
+
+				// 디비 id와 api에서 받은 id 비교후 같으면 회원정보를 세션에 담음.
+				MemberVO login = memberService.snsMemberInfo(vo);
+
+				// 로그인 세션 생성 후 사용자 정보를 담음
+				request.getSession().setAttribute("loginId", login);
+				request.getSession().setMaxInactiveInterval((60 * 30) * 24);
+
+				return "/main/main";
+				
+			} catch (MissingAuthorizationException e) {
+				e.printStackTrace();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "main/main";
+	}
+
 }

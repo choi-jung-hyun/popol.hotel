@@ -29,6 +29,17 @@
     <bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession" destroy-method="clearCache">
         <constructor-arg name="sqlSessionFactory" ref="SqlSessionFactory" />
     </bean>
-	
+    
+	<bean id="connectionFactory"
+        class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+        <constructor-arg value="665995257538298" />
+        <constructor-arg value="9ca9ff59d23f9b790af4c0e6102f03c7" />
+    </bean>
+ 
+    <bean id="oAuth2Parameters"
+        class="org.springframework.social.oauth2.OAuth2Parameters">
+        <property name="scope" value="email" />
+        <property name="redirectUri" value="https://f33b0e8e.ngrok.io/login/facebookLogin.do" />
+    </bean>
 
 </beans>

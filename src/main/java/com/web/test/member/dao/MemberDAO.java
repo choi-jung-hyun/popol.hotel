@@ -33,4 +33,8 @@ public class MemberDAO {
 		return sqlSession.insert("MemberDAO.kakaoSign_upAct", vo);
 	}
 
+	public int facebookSign_upAct(MemberVO vo) throws Exception {
+
+		return sqlSession.insert("MemberDAO.facebookSign_upAct", vo);
+	}
 }

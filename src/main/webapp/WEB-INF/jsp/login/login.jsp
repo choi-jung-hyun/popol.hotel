@@ -115,7 +115,6 @@ margin-left: 4px;
 	<script src="/resources/js/rsa/rsa.js"></script>
 	<!--RSA ³¡  -->
 	<script>
-	
 	function goSign_up(){
 		location.href = '/member/goSign_up.do';
 	}
@@ -205,6 +204,7 @@ margin-left: 4px;
 						<a href="javascript:getKey();" class="btn float-right login_btn">Login</a>
 					  	<a href="${naver_url}"><img height="30" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
 					  	<a href="${kakao_url}"><img height="30" src="/resources/images/kakaoLog_btn.png"> </a>
+						<a href="${facebook_url}"><i class="fa fa-facebook" aria-hidden="true"></i></a>
 					</div>
 					
 				</form>

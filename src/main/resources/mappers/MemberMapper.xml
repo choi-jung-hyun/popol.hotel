@@ -123,4 +123,22 @@
 	)
 </insert>
 
+<insert id="facebookSign_upAct" parameterType="com.web.test.member.vo.MemberVO">
+	INSERT INTO TB_MEMBER(
+		USER_NM,
+		USER_ID,
+		SNS_EMAIL,
+		SNS_TYPE,
+		REG_DT,
+		USE_YN
+	) VALUES(
+		#{userNm},
+		#{userEmail},
+		#{snsEmail},
+		#{snsType},
+		SYSDATE,
+		#{use_yn}
+	)
+</insert>
+
 </mapper>

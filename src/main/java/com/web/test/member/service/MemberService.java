@@ -15,4 +15,5 @@ public interface MemberService  {
 	
 	int kakaoSign_upAct(MemberVO vo)throws Exception;
 	
+	int facebookSign_upAct(MemberVO vo) throws Exception;
 }
