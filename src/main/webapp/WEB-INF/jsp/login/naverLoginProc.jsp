@@ -1,21 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>naverLoginCallback</title>
 
 	<script type="text/javascript">
-		var naver_id_login = new naver_id_login("Client ID", "CallBack URL"); // ¿ª½Ã ¸¶Âù°¡Áö·Î 'localhost'°¡ Æ÷ÇÔµÈ CallBack URL
+		var naver_id_login = new naver_id_login("Client ID", "CallBack URL"); // ì—­ì‹œ ë§ˆì°¬ê°€ì§€ë¡œ 'localhost'ê°€ í¬í•¨ëœ CallBack URL
 		
-		// Á¢±Ù ÅäÅ« °ª Ãâ·Â
+		// ì ‘ê·¼ í† í° ê°’ ì¶œë ¥
 		alert(naver_id_login.oauthParams.access_token);
 		
-		// ³×ÀÌ¹ö »ç¿ëÀÚ ÇÁ·ÎÇÊ Á¶È¸
+		// ë„¤ì´ë²„ ì‚¬ìš©ì í”„ë¡œí•„ ì¡°íšŒ
 		naver_id_login.get_naver_userprofile("naverSignInCallback()");
 		
-		// ³×ÀÌ¹ö »ç¿ëÀÚ ÇÁ·ÎÇÊ Á¶È¸ ÀÌÈÄ ÇÁ·ÎÇÊ Á¤º¸¸¦ Ã³¸®ÇÒ callback function
+		// ë„¤ì´ë²„ ì‚¬ìš©ì í”„ë¡œí•„ ì¡°íšŒ ì´í›„ í”„ë¡œí•„ ì •ë³´ë¥¼ ì²˜ë¦¬í•  callback function
 		function naverSignInCallback() {
 			alert(naver_id_login.getProfileData('name'));
 			alert(naver_id_login.getProfileData('nickname'));

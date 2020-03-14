@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
 
 <footer class="ftco-footer ftco-bg-dark ftco-section">
 	<div class="container">

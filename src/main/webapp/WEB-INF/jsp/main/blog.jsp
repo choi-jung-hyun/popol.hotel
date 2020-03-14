@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -234,7 +234,7 @@
 		</div>
 	</section>
 
-	<!-- footer¿¡ js¸î°³ µé¾îÀÖÀ½. ÇÏ´Ü¿¡³ÖÁö¾ÊÀ¸¸é ÅÛÇÃ¸´ÀÌ ÀÛµ¿¾ÈÇÔ. main.js ¶û aos.jsÀÎ°¡ ±×°Å¶û ¿¬°áµÇÀÕ´Â´Ù¸¥°Ô ÀÖ´Âµ¡?  -->
+	<!-- footerì— jsëª‡ê°œ ë“¤ì–´ìžˆìŒ. í•˜ë‹¨ì—ë„£ì§€ì•Šìœ¼ë©´ í…œí”Œë¦¿ì´ ìž‘ë™ì•ˆí•¨. main.js ëž‘ aos.jsì¸ê°€ ê·¸ê±°ëž‘ ì—°ê²°ë˜ìž‡ëŠ”ë‹¤ë¥¸ê²Œ ìžˆëŠ”ë§?  -->
 	<%@include file="/WEB-INF/jsp/include/inc_footer.jsp"%>
 
 </body>

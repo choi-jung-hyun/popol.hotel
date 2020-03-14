@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
  <head>
     <title>Adventure - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
     <!--JQUERY CDN  -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <!-- adventure ÅÛÇÃ¸´ Àû¿ë ¼Ò½º °ÇµéÁö¸¶¼À ¤Ñ¤Ñ  -->
+    <!-- adventure í…œí”Œë¦¿ ì ìš© ì†ŒìŠ¤ ê±´ë“¤ì§€ë§ˆì…ˆ ã…¡ã…¡  -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="/resources/css/flaticon.css">
     <link rel="stylesheet" href="/resources/css/icomoon.css">
     <link rel="stylesheet" href="/resources/css/style.css">
-    <!-- adventure ÅÛÇÃ¸´ Àû¿ë ¼Ò½º °ÇµéÁö¸¶¼À ¤Ñ¤Ñ  -->
+    <!-- adventure í…œí”Œë¦¿ ì ìš© ì†ŒìŠ¤ ê±´ë“¤ì§€ë§ˆì…ˆ ã…¡ã…¡  -->
     
     
   </head>

@@ -1,14 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>loginWarning</title>
 <script>
 	$(document).ready(function() {
-		alert("·Î±×ÀÎ ÈÄ ÀÌ¿ëÇØÁÖ½Ã±â ¹Ù¶ø´Ï´Ù.");
+		alert("ë¡œê·¸ì¸ í›„ ì´ìš©í•´ì£¼ì‹œê¸° ë°”ëë‹ˆë‹¤.");
 		location.href = "/login/loginView.do";
 		
 		

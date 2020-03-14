@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
 function goHome(){
@@ -32,6 +30,9 @@ function goLogin(){
 
 function goLogout(){
 	location.href = '/login/logout.do';
+}
+function goBoard(){
+	location.href = '/board/boardMain.do';
 }
 </script>
     <nav

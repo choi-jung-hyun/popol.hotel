@@ -1,7 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,7 +95,7 @@ margin-left: 4px;
 	<title>Login</title>
 	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
  	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<!--template ½ÃÀÛ  -->
+	<!--template ì‹œì‘  -->
 	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -107,13 +105,13 @@ margin-left: 4px;
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 	<!--Custom styles-->
 	<link rel="stylesheet" type="text/css" href="styles.css">
-	<!--template ³¡  -->
-	<!--RSA ½ÃÀÛ  -->
+	<!--template ë  -->
+	<!--RSA ì‹œì‘  -->
 	<script src="/resources/js/rsa/jsbn.js"></script>
 	<script src="/resources/js/rsa/prng4.js"></script>
 	<script src="/resources/js/rsa/rng.js"></script>
 	<script src="/resources/js/rsa/rsa.js"></script>
-	<!--RSA ³¡  -->
+	<!--RSA ë  -->
 	<script>
 	function goSign_up(){
 		location.href = '/member/goSign_up.do';
@@ -131,17 +129,17 @@ margin-left: 4px;
 	}
 	
 	function loginProc(map){
-		//RSA ¾ÏÈ£È­
+		//RSA ì•”í˜¸í™”
 		var rsa = new RSAKey();
 		rsa.setPublic(map.pubKeyModule, map.pubKeyExponent);
 		
 		if($("#userEmail").val() == '' || $("#userEmail").val() == null){
-			alert("ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			alert("ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 		
 		if($("#userPw").val() == '' || $("#userPw").val() == null){
-			alert("ÆĞ½º¿öµå¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			alert("íŒ¨ìŠ¤ì›Œë“œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 		
@@ -155,7 +153,7 @@ margin-left: 4px;
 			}
 		
 		}).done(function(data){
-			//·Î±×ÀÎ¼º°ø
+			//ë¡œê·¸ì¸ì„±ê³µ
 			if(data.resultCode == 1){
 				alert(data.msg);
 				location.href = '/main/main.do';
@@ -188,17 +186,17 @@ margin-left: 4px;
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="email" class="form-control" id="userEmail" placeholder="ÀÌ¸ŞÀÏ">
+						<input type="email" class="form-control" id="userEmail" placeholder="ì´ë©”ì¼">
 						
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" id="userPw" placeholder="ºñ¹Ğ¹øÈ£">
+						<input type="password" class="form-control" id="userPw" placeholder="ë¹„ë°€ë²ˆí˜¸">
 					</div>
 					<div class="row align-items-center remember">
-						<input type="checkbox" id="keepLogin">¾ÆÀÌµğ ÀúÀå
+						<input type="checkbox" id="keepLogin">ì•„ì´ë”” ì €ì¥
 					</div>
 					<div class="form-group">
 						<a href="javascript:getKey();" class="btn float-right login_btn">Login</a>
@@ -211,10 +209,10 @@ margin-left: 4px;
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					°èÁ¤ÀÌ ÇÊ¿äÇÏ½Å°¡¿ä?<a href="javascript:goSign_up();">È¸¿ø°¡ÀÔ</a>
+					ê³„ì •ì´ í•„ìš”í•˜ì‹ ê°€ìš”?<a href="javascript:goSign_up();">íšŒì›ê°€ì…</a>
 				</div>
 				<div class="d-flex justify-content-center">
-					<a href="#">ºñ¹Ğ¹øÈ£¸¦ Ã£À¸½Ã³ª¿ä?</a>
+					<a href="#">ë¹„ë°€ë²ˆí˜¸ë¥¼ ì°¾ìœ¼ì‹œë‚˜ìš”?</a>
 				</div>
 			</div>
 		</div>

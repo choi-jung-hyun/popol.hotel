@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -131,7 +131,7 @@
 					thousand times and everything that was left from its origin would
 					be the word "and" and the Little Blind Text should turn around and
 					return to its own, safe country. But nothing the copy said could
-					convince her and so it didn¡¯t take long until a few insidious Copy
+					convince her and so it didnâ€™t take long until a few insidious Copy
 					Writers ambushed her, made her drunk with Longe and Parole and
 					dragged her into their agency, where they abused her for their.</p>
 			</div>
@@ -330,7 +330,7 @@
 		</div>
 	</section>
 
-	<!-- footer¿¡ js¸î°³ µé¾îÀÖÀ½. ÇÏ´Ü¿¡³ÖÁö¾ÊÀ¸¸é ÅÛÇÃ¸´ÀÌ ÀÛµ¿¾ÈÇÔ. main.js ¶û aos.jsÀÎ°¡ ±×°Å¶û ¿¬°áµÇÀÕ´Â´Ù¸¥°Ô ÀÖ´Âµ¡?  -->
+	<!-- footerì— jsëª‡ê°œ ë“¤ì–´ìžˆìŒ. í•˜ë‹¨ì—ë„£ì§€ì•Šìœ¼ë©´ í…œí”Œë¦¿ì´ ìž‘ë™ì•ˆí•¨. main.js ëž‘ aos.jsì¸ê°€ ê·¸ê±°ëž‘ ì—°ê²°ë˜ìž‡ëŠ”ë‹¤ë¥¸ê²Œ ìžˆëŠ”ë§?  -->
 	<%@include file="/WEB-INF/jsp/include/inc_footer.jsp"%>
 
 

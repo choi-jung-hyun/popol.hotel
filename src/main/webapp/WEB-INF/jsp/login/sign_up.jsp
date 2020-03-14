@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>È¸¿ø°¡ÀÔ</title>
+<title>íšŒì›ê°€ì…</title>
 <!-- Bootstrap -->
 <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 <!-- font awesome -->
@@ -27,7 +27,7 @@
 <script>
 $(document).ready(function () {
 	   $(function () {
-	            //ÈŞ´ëÆù¹øÈ£ ÀÔ·Â½Ã ÀÚµ¿ ÇÏÀÌÇÂ
+	            //íœ´ëŒ€í°ë²ˆí˜¸ ì…ë ¥ì‹œ ìë™ í•˜ì´í”ˆ
 	            $('#userPhone').keydown(function (event) {
 	            	let lastNum;
 	            	var key = event.charCode || event.keyCode || 0;
@@ -36,7 +36,7 @@ $(document).ready(function () {
 	                 if ($text.val().length === 3) {
 	                     $text.val($text.val() + '-');
 	                 }
-	                 lastNum =  $text.val().substr(2,1);//ÈŞ´ëÆù ¾ÕÀÚ¸® ¸¶Áö¸·¹øÈ£¸¦ °É·¯³¿
+	                 lastNum =  $text.val().substr(2,1);//íœ´ëŒ€í° ì•ìë¦¬ ë§ˆì§€ë§‰ë²ˆí˜¸ë¥¼ ê±¸ëŸ¬ëƒ„
 	                 console.log(lastNum);
 	              	if(lastNum == "0"){
 	              		if ($text.val().length === 8) {
@@ -52,29 +52,29 @@ $(document).ready(function () {
 	             }
 
 	             return (key == 8 || key == 9 || key == 46 || (key >= 48 && key <= 57) || (key >= 96 && key <= 105));
-				 // Key 8¹ø ¹é½ºÆäÀÌ½º, Key 9¹ø ÅÇ, Key 46¹ø Delete ºÎÅÍ 0 ~ 9±îÁö, Key 96 ~ 105±îÁö ³Ñ¹öÆĞÆ®
-				 // ÇÑ¸¶µğ·Î JQuery 0 ~~~ 9 ¼ıÀÚ ¹é½ºÆäÀÌ½º, ÅÇ, Delete Å° ³Ñ¹öÆĞµå¿Ü¿¡´Â ÀÔ·Â¸øÇÔ
+				 // Key 8ë²ˆ ë°±ìŠ¤í˜ì´ìŠ¤, Key 9ë²ˆ íƒ­, Key 46ë²ˆ Delete ë¶€í„° 0 ~ 9ê¹Œì§€, Key 96 ~ 105ê¹Œì§€ ë„˜ë²„íŒ¨íŠ¸
+				 // í•œë§ˆë””ë¡œ JQuery 0 ~~~ 9 ìˆ«ì ë°±ìŠ¤í˜ì´ìŠ¤, íƒ­, Delete í‚¤ ë„˜ë²„íŒ¨ë“œì™¸ì—ëŠ” ì…ë ¥ëª»í•¨
 	         })
 	   });
 
 	});
-	//Ãë¼Ò¹öÆ° Å¬¸¯ÀÌº¥Æ®
+	//ì·¨ì†Œë²„íŠ¼ í´ë¦­ì´ë²¤íŠ¸
 	function back() {
 		location.href = '/login/loginView.do';
 	}
 	
-	//¾ÆÀÌµğ Áßº¹ È®ÀÎ
+	//ì•„ì´ë”” ì¤‘ë³µ í™•ì¸
 	function email_check(){
 		
 		var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 		
 		if($("#userEmail").val() == '' || $("#userEmail").val() == null){
-			alert("ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			alert("ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 		
-		if(!regExp.test($("#userEmail").val())){//Çü½ÄÀÌ ´Ù¸¥°æ¿ì
-			alert("ÀÌ¸ŞÀÏ Çü½ÄÀÌ ¸ÂÁö¾Ê½À´Ï´Ù.");
+		if(!regExp.test($("#userEmail").val())){//í˜•ì‹ì´ ë‹¤ë¥¸ê²½ìš°
+			alert("ì´ë©”ì¼ í˜•ì‹ì´ ë§ì§€ì•ŠìŠµë‹ˆë‹¤.");
 			return false;
 		}
 		
@@ -90,12 +90,12 @@ $(document).ready(function () {
 			if(data.resultCode > 0){
 				$("#emailCheck_yn").val("N");
 				$("#userEmail").focus();
-				alert(data.Msg);//Áßº¹µÈ¾ÆÀÌµğ
+				alert(data.Msg);//ì¤‘ë³µëœì•„ì´ë””
 			}else{
-				alert(data.Msg);//»ç¿ë°¡´É
+				alert(data.Msg);//ì‚¬ìš©ê°€ëŠ¥
 				$("#emailCheck_yn").val("Y");
 				
-				//»ç¿ë°¡´ÉÇÑ °æ¿ì ¼öÁ¤¸øÇÏ°Ô ¹öÆ° »óÅÂº¯°æ
+				//ì‚¬ìš©ê°€ëŠ¥í•œ ê²½ìš° ìˆ˜ì •ëª»í•˜ê²Œ ë²„íŠ¼ ìƒíƒœë³€ê²½
 				$("#email_chk").hide();
 				$("#userEmail").prop("readOnly","true");
 				$("#email_modify").show();
@@ -103,64 +103,64 @@ $(document).ready(function () {
 		})
 		
 	}
-	//ÀÌ¸ŞÀÏ Áßº¹ ¹öÆ° ÀÌº¥Æ®
+	//ì´ë©”ì¼ ì¤‘ë³µ ë²„íŠ¼ ì´ë²¤íŠ¸
 	function email_modify(){
 		
-		$("#emailCheck_yn").val("N"); //´Ù½Ã Áßº¹È®ÀÎÇØ¾ßÇÔ
+		$("#emailCheck_yn").val("N"); //ë‹¤ì‹œ ì¤‘ë³µí™•ì¸í•´ì•¼í•¨
 		$("#userEmail").focus();
 		$("#userEmail").removeAttr("readOnly");
 		$("#email_modify").hide();
 		$("#email_chk").show();
 	}
 	
-	//Æ¯¼ö¹®ÀÚÃ¼Å© 
+	//íŠ¹ìˆ˜ë¬¸ìì²´í¬ 
 	function special_replace(text){
 		
 		var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
 		 
-		if(regExp.test(text)){//Æ¯¼ö¹®ÀÚ ÀÖ´Â°æ¿ì false
+		if(regExp.test(text)){//íŠ¹ìˆ˜ë¬¸ì ìˆëŠ”ê²½ìš° false
 			return false;
 		}
 	}
-	//ÀÌ¸ŞÀÏ Çü½ÄÃ¼Å©
+	//ì´ë©”ì¼ í˜•ì‹ì²´í¬
 	function emailChk(email){
 		
 		var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-		if(!regExp.test(email)){//Çü½ÄÀÌ ´Ù¸¥°æ¿ì
+		if(!regExp.test(email)){//í˜•ì‹ì´ ë‹¤ë¥¸ê²½ìš°
 			return false;
 		}
 		
 	}
-	//ºñ¹Ğ¹øÈ£ Á¤±Ô½Ä 
+	//ë¹„ë°€ë²ˆí˜¸ ì •ê·œì‹ 
 	function pwChk(pass){
 		
 		var regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,12}$/;
 
 		if(pass == '' || pass == null){
-			alert("ÆĞ½º¿öµå¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä!");
+			alert("íŒ¨ìŠ¤ì›Œë“œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”!");
 			return false;
 		}
 		
-		if(!regExp.test(pass)){// ºñ¹Ğ¹øÈ£ Çü½Ä¿¡ ¸ÂÁö¾Ê´Â°æ¿ì
-			alert("ºñ¹Ğ¹øÈ£´Â 8~12ÀÚ¸® Æ¯¼ö¹®ÀÚ, ¼ıÀÚ, ¿µ¹®À» Á¶ÇÕÇÏ¿© ÀÛ¼ºÇØ¾ßµË´Ï´Ù.");
+		if(!regExp.test(pass)){// ë¹„ë°€ë²ˆí˜¸ í˜•ì‹ì— ë§ì§€ì•ŠëŠ”ê²½ìš°
+			alert("ë¹„ë°€ë²ˆí˜¸ëŠ” 8~12ìë¦¬ íŠ¹ìˆ˜ë¬¸ì, ìˆ«ì, ì˜ë¬¸ì„ ì¡°í•©í•˜ì—¬ ì‘ì„±í•´ì•¼ë©ë‹ˆë‹¤.");
 			$("#userPw").val("");
 			$("#userPwChk").val("");
 			return false;
 		}
-		pwMatch(pass);//Á¤±Ô½ÄÀ»Åë°úÇß´Ù¸é ±âÁ¸¿¡ ÀÔ·Â¹Ş¾Ñ´ø ÆĞ½º¿öµå·Î ÀÏÄ¡Ã¼Å©¸¦ÇÔ.
+		pwMatch(pass);//ì •ê·œì‹ì„í†µê³¼í–ˆë‹¤ë©´ ê¸°ì¡´ì— ì…ë ¥ë°›ì•—ë˜ íŒ¨ìŠ¤ì›Œë“œë¡œ ì¼ì¹˜ì²´í¬ë¥¼í•¨.
 	}
-	//ºñ¹Ğ¹øÈ£ ÀÏÄ¡ Ã¼Å©
+	//ë¹„ë°€ë²ˆí˜¸ ì¼ì¹˜ ì²´í¬
 	function pwMatch(pw){
 		
 		if(pw != $("#userPwChk").val()){
-			alert("ÆĞ½º¿öµå°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+			alert("íŒ¨ìŠ¤ì›Œë“œê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			$("#userPwChk").val("");
 			return false;
 		}
 	}
 	
-	//È¸¿ø°¡ÀÔÀü¿¡ RSA ¾ÏÈ£È­Å° °¡Á®¿È.
+	//íšŒì›ê°€ì…ì „ì— RSA ì•”í˜¸í™”í‚¤ ê°€ì ¸ì˜´.
 	function getKey() {
 		$.ajax({
 			type : 'POST',
@@ -173,61 +173,61 @@ $(document).ready(function () {
 	}
 
 	function signSub(map) {
-		//RSA ¾ÏÈ£È­
+		//RSA ì•”í˜¸í™”
 		var rsa = new RSAKey();
 		rsa.setPublic(map.pubKeyModule, map.pubKeyExponent);
 		
-		//ÀÌ¸§ °ø¹éÃ¼Å©
+		//ì´ë¦„ ê³µë°±ì²´í¬
 		if ($("#userNm").val() == '' || $("#userNm").val() == null) {
-			alert("ÀÌ¸§¿¡ °ø¹éÀ» ÀÔ·ÂÇÒ ¼ö ¾ø½À´Ï´Ù.");
+			alert("ì´ë¦„ì— ê³µë°±ì„ ì…ë ¥í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 			return false;
 		}
-		//ÀÌ¸§¿¡ Æ¯¼ö¹®ÀÚ Ã¼Å©
+		//ì´ë¦„ì— íŠ¹ìˆ˜ë¬¸ì ì²´í¬
 		if (special_replace($("#userNm").val()) == false) {
-			alert("ÀÌ¸§¿¡ Æ¯¼ö¹®ÀÚ¸¦ »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.");
+			alert("ì´ë¦„ì— íŠ¹ìˆ˜ë¬¸ìë¥¼ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 			$("#userNm").val("");
 			return false;
 		}
-		//ÀÌ¸ŞÀÏ Çü½ÄÃ¼Å©
+		//ì´ë©”ì¼ í˜•ì‹ì²´í¬
 		if (emailChk($("#userEmail").val()) == false) {
-			alert("ÀÌ¸ŞÀÏ Çü½ÄÀÌ ÀûÇÕÇÏÁö ¾Ê½À´Ï´Ù.");
+			alert("ì´ë©”ì¼ í˜•ì‹ì´ ì í•©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			$("#userEmail").val("");
 			return false;
 		}
-		//ºñ¹Ğ¹øÈ£ Á¤±Ô½Ä ¹× ºñ¹Ğ¹øÈ£ ÀÏÄ¡ Ã¼Å©
+		//ë¹„ë°€ë²ˆí˜¸ ì •ê·œì‹ ë° ë¹„ë°€ë²ˆí˜¸ ì¼ì¹˜ ì²´í¬
 		if (pwChk($("#userPw").val()) == false) {
 			return false;
 		}
-		//ÈŞ´ëÆù¹øÈ£ °ø¹éÃ¼Å©
+		//íœ´ëŒ€í°ë²ˆí˜¸ ê³µë°±ì²´í¬
 		if (userPhone == '' || userPhone == null) {
-			alert("ÈŞ´ëÆù ¹øÈ£¿¡ °ø¹éÀ» ÀÔ·ÂÇÒ ¼ö ¾ø½À´Ï´Ù.");
+			alert("íœ´ëŒ€í° ë²ˆí˜¸ì— ê³µë°±ì„ ì…ë ¥í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 			return false;
 		}
-		//ÁÖ¼ÒÃ¼Å©
+		//ì£¼ì†Œì²´í¬
 		if ($("#post_code").val() == '' || $("#post_code").val() == null) {
-			alert("¿ìÆí¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			alert("ìš°í¸ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 		if ($("#addr").val() == '' || $("#addr").val() == null) {
-			alert("ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			alert("ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 		if ($("#detail_addr").val() == '' || $("#detail_addr").val() == null) {
-			alert("»ó¼¼ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+			alert("ìƒì„¸ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 		if (special_replace($("#detail_addr").val()) == false) {
-			alert("»ó¼¼ÁÖ¼Ò¿¡ Æ¯¼ö¹®ÀÚ¸¦ ÀÔ·ÂÇÒ ¼ö ¾ø½À´Ï´Ù.");
+			alert("ìƒì„¸ì£¼ì†Œì— íŠ¹ìˆ˜ë¬¸ìë¥¼ ì…ë ¥í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 			return false;
 		}
-		//¾à°ü Ã¼Å©
+		//ì•½ê´€ ì²´í¬
 		if ($("#agree").is(":checked") == false) {
-			alert("¾à°üµ¿ÀÇ¸¦ Ã¼Å©ÇØÁÖ¼¼¿ä.");
+			alert("ì•½ê´€ë™ì˜ë¥¼ ì²´í¬í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 
 		if ($("#emailCheck_yn").val() != "Y") {
-			alert("ÀÌ¸ŞÀÏ Áßº¹ Ã¼Å©¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
+			alert("ì´ë©”ì¼ ì¤‘ë³µ ì²´í¬ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.");
 			return false;
 		}
 		
@@ -245,10 +245,10 @@ $(document).ready(function () {
 			},
 
 		}).done(function(data) {
-			if (data.resultCode > 0) {//¼º°ø
+			if (data.resultCode > 0) {//ì„±ê³µ
 				alert(data.Msg);
 				location.href = "/login/loginView.do";
-			} else { //½ÇÆĞ
+			} else { //ì‹¤íŒ¨
 				alert(data.Msg);
 			}
 		})
@@ -259,56 +259,56 @@ $(document).ready(function () {
 	<article class="container">
 		<div class="page-header">
 			<div class="col-md-6 col-md-offset-3">
-				<h3>È¸¿ø°¡ÀÔ</h3>
+				<h3>íšŒì›ê°€ì…</h3>
 			</div>
 		</div>
 		<div class="col-sm-6 col-md-offset-3">
 			<form role="form">
 			<input type="hidden" id="emailCheck_yn" value="N">
 				<div class="form-group">
-					¼º¸í <input type="text" class="form-control" id="userNm" placeholder="ÀÌ¸§À» ÀÔ·ÂÇØ ÁÖ¼¼¿ä." maxlength="6">
+					ì„±ëª… <input type="text" class="form-control" id="userNm" placeholder="ì´ë¦„ì„ ì…ë ¥í•´ ì£¼ì„¸ìš”." maxlength="6">
 				</div>
 				<div class="form-group">
-					ÀÌ¸ŞÀÏ ÁÖ¼Ò <input type="email" class="form-control" id="userEmail" placeholder="ÀÌ¸ŞÀÏ ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä." maxlength="30">
-							<a href="javascript:email_check();" id="email_chk" class="btn btn-primary"> Áßº¹È®ÀÎ <i class="fa fa-check spaceLeft"></i></a>
-							<a href="javascript:email_modify();" id="email_modify" class="btn btn-primary" style="display:none;"> ¼öÁ¤ <i class="fa fa-check spaceLeft"></i></a>
+					ì´ë©”ì¼ ì£¼ì†Œ <input type="email" class="form-control" id="userEmail" placeholder="ì´ë©”ì¼ ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”." maxlength="30">
+							<a href="javascript:email_check();" id="email_chk" class="btn btn-primary"> ì¤‘ë³µí™•ì¸ <i class="fa fa-check spaceLeft"></i></a>
+							<a href="javascript:email_modify();" id="email_modify" class="btn btn-primary" style="display:none;"> ìˆ˜ì • <i class="fa fa-check spaceLeft"></i></a>
 				</div>
 				<div class="form-group">
-					ºñ¹Ğ¹øÈ£ <input type="password" class="form-control" id="userPw" placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä." maxlength="12">
+					ë¹„ë°€ë²ˆí˜¸ <input type="password" class="form-control" id="userPw" placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”." maxlength="12">
 				</div>
 				<div class="form-group">
-					ºñ¹Ğ¹øÈ£ È®ÀÎ<input type="password" class="form-control" id="userPwChk" placeholder="ºñ¹Ğ¹øÈ£ È®ÀÎÀ» À§ÇØ ´Ù½ÃÇÑ¹ø ÀÔ·Â ÇØ ÁÖ¼¼¿ä." maxlength="12">
+					ë¹„ë°€ë²ˆí˜¸ í™•ì¸<input type="password" class="form-control" id="userPwChk" placeholder="ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì„ ìœ„í•´ ë‹¤ì‹œí•œë²ˆ ì…ë ¥ í•´ ì£¼ì„¸ìš”." maxlength="12">
 				</div>
 				<div class="form-group">
-					ÈŞ´ëÆù ¹øÈ£ <input type="text" class="form-control" id="userPhone" placeholder="ÈŞ´ëÆù¹øÈ£¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä."  maxlength="13">
+					íœ´ëŒ€í° ë²ˆí˜¸ <input type="text" class="form-control" id="userPhone" placeholder="íœ´ëŒ€í°ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš”."  maxlength="13">
 				</div>
 				
-				ÁÖ¼Ò<br>
+				ì£¼ì†Œ<br>
 				<div class="form-group">
-				<input type="text"  id="post_code" placeholder="¿ìÆí¹øÈ£" readOnly="readOnly">
-				<input type="button" onclick="sample6_execDaumPostcode()" value="¿ìÆí¹øÈ£ Ã£±â">
+				<input type="text"  id="post_code" placeholder="ìš°í¸ë²ˆí˜¸" readOnly="readOnly">
+				<input type="button" onclick="sample6_execDaumPostcode()" value="ìš°í¸ë²ˆí˜¸ ì°¾ê¸°">
 				</div>
 				<div class="form-group" style="margin-top:5px;">
-					<input type="text" class="form-control" id="addr" placeholder="ÁÖ¼Ò" readOnly="readOnly">
+					<input type="text" class="form-control" id="addr" placeholder="ì£¼ì†Œ" readOnly="readOnly">
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" id="detail_addr" placeholder="»ó¼¼ÁÖ¼Ò">
+					<input type="text" class="form-control" id="detail_addr" placeholder="ìƒì„¸ì£¼ì†Œ">
 				</div>
 
 				<div class="form-group">
-					<label>¾à°ü µ¿ÀÇ</label>
+					<label>ì•½ê´€ ë™ì˜</label>
 					<div data-toggle="buttons">
 						<label class="btn btn-primary active"> <span
 							class="fa fa-check"></span> <input id="agree" type="checkbox"
 							autocomplete="off" checked>
-						</label> <a href="#">ÀÌ¿ë¾à°ü</a>¿¡ µ¿ÀÇÇÕ´Ï´Ù.
+						</label> <a href="#">ì´ìš©ì•½ê´€</a>ì— ë™ì˜í•©ë‹ˆë‹¤.
 					</div>
 				</div>
 
 				<div class="form-group text-center">
-					<a href="javascript:getKey();" class="btn btn-primary"> È¸¿ø°¡ÀÔ<i
+					<a href="javascript:getKey();" class="btn btn-primary"> íšŒì›ê°€ì…<i
 						class="fa fa-check spaceLeft"></i>
-					</a> <a href="javascript:back();" class="btn btn-warning"> °¡ÀÔÃë¼Ò<i
+					</a> <a href="javascript:back();" class="btn btn-warning"> ê°€ì…ì·¨ì†Œ<i
 						class="fa fa-times spaceLeft"></i>
 					</a>
 				</div>
