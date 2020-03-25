@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardDAO">
+
+	<insert id="boardReg" parameterType="com.web.test.board.vo.BoardVO">
+		INSERT INTO TB_BOARD(
+			BOARD_NO,
+			TITLE,
+			CONTENT,
+			REG_DT,
+			USER_EMAIL,
+			USE_YN
+		)
+		VALUES(
+			BOARD_SEQ.NEXTVAL,
+			#{title},
+			#{content},
+			SYSDATE,
+			#{user_email},
+			#{use_yn}
+		)
+			
+	</insert>
+	
+	<select id="boardList" parameterType="com.web.test.board.vo.BoardVO" resultType="com.web.test.board.vo.BoardVO">
+		SELECT 
+    		TT.*
+		FROM(
+			SELECT 
+    			ROWNUM AS RN, T.*
+			FROM (
+    			SELECT
+			        T1.BOARD_NO,
+			        T1.TITLE,
+			        T1.CONTENT,
+			        T1.REG_DT,
+			        T1.UPT_DT,
+			        T1.USER_EMAIL,
+			        T1.VIEW_COUNT,
+			        T1.USE_YN
+    			FROM 
+       				 TB_BOARD T1
+       			WHERE
+       				1=1
+       			<if test="searchKey != '' and searchKey != null">
+       				<if test="searchKey == 'title'">
+       					AND UPPER(T1.TITLE) LIKE '%' || UPPER(#{searchWrd}) || '%'
+       				</if>
+       				
+       				<if test="searchKey == 'user_email'">
+       					AND UPPER(T1.USER_EMAIL) LIKE '%' || UPPER(#{searchWrd}) || '%'
+       				</if>
+       			</if>
+		)T
+			)TT
+				WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	</select>
+	
+	<select id="boardListCnt" parameterType="com.web.test.board.vo.BoardVO" resultType="Integer">
+		SELECT 
+    		TT.*
+		FROM(
+			SELECT 
+    			COUNT(*)
+			FROM (
+    			SELECT
+			        T1.BOARD_NO,
+			        T1.TITLE,
+			        T1.CONTENT,
+			        T1.REG_DT,
+			        T1.UPT_DT,
+			        T1.USER_EMAIL,
+			        T1.VIEW_COUNT,
+			        T1.USE_YN
+    			FROM 
+       				 TB_BOARD T1
+       			WHERE
+       				1=1
+       			<if test="searchKey != '' and searchKey != null">
+       				<if test="searchKey == 'title'">
+       					AND UPPER(T1.TITLE) LIKE '%' || UPPER(#{searchWrd}) || '%'
+       				</if>
+       				
+       				<if test="searchKey == 'user_email'">
+       					AND UPPER(T1.USER_EMAIL) LIKE '%' || UPPER(#{searchWrd}) || '%'
+       				</if>
+       			</if>		 
+       				 
+		)T
+			)TT
+	</select>
+	
+	<select id="boardView" parameterType="com.web.test.board.vo.BoardVO" resultType="com.web.test.board.vo.BoardVO">
+			SELECT
+			     T1.BOARD_NO,
+			     T1.TITLE,
+			     T1.CONTENT,
+			     T1.REG_DT,
+			     T1.UPT_DT,
+			     T1.USER_EMAIL,
+			     T1.VIEW_COUNT,
+			     T1.USE_YN
+    		FROM 
+       			 TB_BOARD T1
+       		WHERE
+       			1=1
+       		<if test="board_no != null and board_no != ''">
+       			AND	BOARD_NO = #{board_no}
+       		</if>	
+			
+	</select>
+	
+	<update id="boardUpdate" parameterType="com.web.test.board.vo.BoardVO">
+		UPDATE
+			TB_BOARD
+		SET
+			TITLE = #{title},
+			CONTENT = #{content},
+			UPT_DT = SYSDATE
+		WHERE
+			BOARD_NO = #{board_no}	
+	</update>	
+	
+	
+	<update id="viewUp" parameterType="Integer">
+		UPDATE
+			TB_BOARD
+		SET
+			VIEW_COUNT = VIEW_COUNT +1
+		WHERE
+			BOARD_NO = #{board_no}	
+	</update>
+	
+	<delete id="boardDelete" parameterType="com.web.test.board.vo.BoardVO">
+		DELETE 
+		FROM
+			TB_BOARD
+		WHERE 
+			BOARD_NO = #{board_no}	
+			
+	</delete>
+</mapper>

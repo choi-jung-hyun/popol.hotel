@@ -41,5 +41,13 @@
         <property name="scope" value="email" />
         <property name="redirectUri" value="https://f33b0e8e.ngrok.io/login/facebookLogin.do" />
     </bean>
+    
+    <!-- MultipartResolver 설정 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000000" />
+        <property name="maxInMemorySize" value="100000000" />
+    </bean>
+
+
 
 </beans>
